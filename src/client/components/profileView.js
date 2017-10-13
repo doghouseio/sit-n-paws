@@ -22,6 +22,9 @@ export default class ProfileView extends React.Component {
       hostPictures: props.listing.hostPictures,
       homePictures: props.listing.homePictures,
       cost: props.listing.cost,
+      yard: props.listing.yard,
+      children: props.listing.children,
+      pets: props.listing.pets,
       date: null, //TODO, import date handling functionality
       open: false
     }
@@ -99,17 +102,18 @@ export default class ProfileView extends React.Component {
           <CardMedia
             overlay={<CardTitle title={`$${this.state.cost} Per Night!`} subtitle={this.state.homeAttributes} />}
           >
-            <img src={this.state.homePictures} alt="Home Picture" width="360" height="270" />
+            <img src={this.state.homePictures} style={{height: "auto"}} alt="Home Picture" width="360" height="270" />
           </CardMedia>
           <CardTitle title="5 Stars"
            subtitle={`Max Dog Size:${this.state.dogSizePreference}`} />
           <CardText>
             <div className = "listing">
-              {`Preferred Dog Breed: ${this.state.dogBreedPreference}. `}
-              {`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-              Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-              Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.`}
+              {`Preferred Dog Breed: ${this.state.dogBreedPreference}. `} <br/>
+              {`Preferred Dog Activities: ${this.state.dogActivityPreference}`} <br/>
+              {`Yard Size: ${this.state.yard}. `} <br/>
+              {`Pets: ${this.state.pets}`} <br/>
+              {`Children: ${this.state.children}`} <br/>
+              {`Description: ${this.state.homeAttributes}`}
             </div>
           </CardText>
           <CardActions>
