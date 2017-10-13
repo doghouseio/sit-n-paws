@@ -6,8 +6,9 @@ body, html, #app {
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(2, minmax(200px, 360px));
-  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  grid-gap: 15px;
+  padding: 0px 15px;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -25,9 +26,6 @@ body, html, #app {
 }
 
 @media only screen and (max-width: 420px) {
-  .wrapper {
-    grid-template-columns: 1fr;
-   }
   .login-forms {
     margin: 0 auto;
     width: 80%;
