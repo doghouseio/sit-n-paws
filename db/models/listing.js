@@ -17,6 +17,7 @@ listingSchema = new mongoose.Schema(
     yard: { type: String, required: true },
     children: { type: String, required: true },
     pets: { type: String, required: true },
+    position: []
   }
 );
 
