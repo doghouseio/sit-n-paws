@@ -12,7 +12,6 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 const upload = multer({dest: './uploads/'});
 let port = process.env.PORT || 3000
-const cors = require('cors')
 
 // This is the shape of the object from the config file which is gitignored
 // const cloudConfig = {
@@ -25,7 +24,6 @@ cloudinary.config(cloudConfig);
 const app = express();
 app.use(express.static((__dirname + '/src/public')));
 app.use(bodyParser.json());
-app.use(cors());
 
 seedListingDB();
 
