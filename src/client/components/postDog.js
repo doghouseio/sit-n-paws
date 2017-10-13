@@ -14,7 +14,7 @@ export default class PostDog extends React.Component {
       dogBreed: '',
       dogActivityReq: '',
       bio: '',
-      dogPictures: '',
+      dogPictures: null,
       age: 0,
       submitted: false,
       error: null,
@@ -45,7 +45,7 @@ export default class PostDog extends React.Component {
       formData.append("dogBreed", this.state.dogBreed);
       formData.append("dogActivityReq", this.state.dogActivityReq);
       formData.append("bio", this.state.bio);
-      formData.append("dogPictures", this.state.dogPictures);
+      formData.append("dogPictures", this.state.dogPicture);
       formData.append("age", this.state.age);
       formData.append("email", this.state.userEmail);
 
@@ -57,7 +57,7 @@ export default class PostDog extends React.Component {
 
       submitDog(url, formData, (res) => {
         if (res.success === true) {
-          console.log('Listing submitted!');
+          console.log('Dog submitted!');
           this.setState({message: res.message});
           this.setState({submitted: true});
         } else {
@@ -105,8 +105,8 @@ export default class PostDog extends React.Component {
                 <label>Dog's age:</label><br />
                 <input type="text" name="age" value={this.state.age} /><br />
 
-                <label htmlFor="dogPictures" className="postListing-fileLabel">{this.state.dogPictures ? this.state.dogPictures.name : `Choose a Picture of your dog`}</label><br />
-                <input type="file" name="dogPictures" id="dogPictures" className="dogListing-file" /><br />
+                <label htmlFor="dogPicture" className="postListing-fileLabel">{this.state.dogPicture ? this.state.dogPicture.name : `Choose a Picture of your dog`}</label><br />
+                <input type="file" name="dogPicture" id="dogPicture" className="postListing-file" /><br />
                 </div>
               </div>
             <div>
