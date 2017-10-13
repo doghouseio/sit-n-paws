@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
+import MyMap from './Map.js';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import jwt from 'jsonwebtoken';
 import masterUrl from '../utils/masterUrl.js';
@@ -25,6 +26,7 @@ export default class ProfileView extends React.Component {
       yard: props.listing.yard,
       children: props.listing.children,
       pets: props.listing.pets,
+      position: props.listing.position,
       date: null, //TODO, import date handling functionality
       open: false
     }
@@ -115,6 +117,7 @@ export default class ProfileView extends React.Component {
               {`Children: ${this.state.children}`} <br/>
               {`Description: ${this.state.homeAttributes}`}
             </div>
+            <MyMap position={this.state.position}/>
           </CardText>
           <CardActions>
             <FlatButton label="Contact Me" onClick={this.handleOpen}/>

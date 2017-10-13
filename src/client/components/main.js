@@ -3,7 +3,6 @@ import ListingsContainer from './listingsContainer.js';
 import PostListing from './PostListing.js';
 import PostDog from './postDog.js';
 import jwt from 'jsonwebtoken';
-
 import ProfileUpdate from './profileForm.js';
 import ShowProfile from './showProfile.js';
 import Search from './search.js'
