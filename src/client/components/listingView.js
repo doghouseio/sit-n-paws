@@ -108,9 +108,11 @@ export default class ListingView extends React.Component {
   // When component loads, retrieves and decodes jwt and extracts user's email
   // from token.
   componentDidMount() {
-    var token = localStorage.jwt;
-    var decoded = jwt.decode(token);
-    this.setState({ownerEmail: decoded.email});
+    if (localStorage.jwt) {
+      var token = localStorage.jwt;
+      var decoded = jwt.decode(token);
+      this.setState({ownerEmail: decoded.email});
+    }
   }
 
   render() {
