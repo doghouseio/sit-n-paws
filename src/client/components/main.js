@@ -17,6 +17,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Pets from 'material-ui/svg-icons/action/pets';
+import ActionHome from 'material-ui/svg-icons/action/home';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
@@ -69,25 +70,42 @@ export default class Main extends React.Component {
 
     // Drawer - Renders Edit Your Profile when Edit Profile button is clicked
     this.profileOnClick = (event) => {
-      this.setState({renderProfile: !this.state.renderProfile});
+      if (this.authLogin()) {
+        this.setState({renderProfile: !this.state.renderProfile});
+      } else {
+        this.state({openLoginMessage: !this.state.openLoginMessage});
+      }
     }
 
     // PostListing - Opens modal to post a listing
     this.postListing = (event) => {
-      this.setState({openPostListing: !this.state.openPostListing});
+      if (this.authLogin()) {
+        this.setState({openPostListing: !this.state.openPostListing});
+      } else {
+        this.loginMessageToggle();
+      }
     }
 
     //PostDog - Opens modal to post a listing
     this.postDog = () => {
-      console.log('Posting Dog')
-      this.setState({openPostDog: !this.state.openPostDog});
+      if (this.authLogin()) {
+        this.setState({openPostDog: !this.state.openPostDog});
+      } else {
+        this.loginMessageToggle();
+      }
     }
 
     this.loginToggle = () => {
+      if (this.state.openLoginMessage === true) {
+        this.loginMessageToggle();
+      }
       this.setState({openLogin: !this.state.openLogin});
     };
 
     this.registerToggle = () => {
+      if (this.state.openLoginMessage === true) {
+        this.loginMessageToggle();
+      }
       this.setState({openRegister: !this.state.openRegister});
     };
 
@@ -139,17 +157,25 @@ export default class Main extends React.Component {
       <div>
         <Toolbar style={{background: 'rgb(197, 186, 155)'}}>
           <ToolbarGroup firstChild={true}>
-            <IconButton onClick={this.postListing}><Pets/></IconButton>
+            <IconButton onClick={this.postDog}><Pets/></IconButton>
+            <IconButton onClick={this.postListing}><ActionHome/></IconButton>
           </ToolbarGroup>
 
           <ToolbarGroup>
-            <Search onChange={this.handleSearch} authLogin={this.authLogin}/>
+            <Search onChange={this.handleSearch} authLogin={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
           </ToolbarGroup>
 
-          <ToolbarGroup>
-            <RaisedButton label="Login" onClick={this.loginToggle}/>
-            <RaisedButton label="Register" onClick={this.registerToggle}/>
-          </ToolbarGroup>
+          {!this.authLogin() ?
+            <ToolbarGroup>
+              <RaisedButton label="Login" onClick={this.loginToggle}/>
+              <RaisedButton label="Register" onClick={this.registerToggle}/>
+            </ToolbarGroup>
+            :
+            <ToolbarGroup>
+              <RaisedButton label="Log Out" onClick={this.logoutOnClick}/>
+            </ToolbarGroup>
+          }
+
 
           <ToolbarGroup lastChild={true}>
             <IconButton onClick={this.touchTap}><NavigationMenu/></IconButton>
@@ -204,7 +230,7 @@ export default class Main extends React.Component {
         </Dialog>
 
         <Dialog
-          title="Users Only!"
+          title="Users only!"
           actions={actions}
           modal={false}
           onRequestClose={this.loginMessageToggle}
