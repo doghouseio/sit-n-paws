@@ -462,6 +462,8 @@ app.get('/bookings/host', (req, res) => {
 //Get all bookings that the user is patronizing
 app.get('/bookings/guest', (req, res) => {
   let email = req.query.email
+  console.log(req.query)
+  console.log(email)
   Booking.find({guestEmail: email})
     .exec((err, booking) => {
       if (err) {

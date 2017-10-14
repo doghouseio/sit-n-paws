@@ -17,11 +17,7 @@ export default class ProfileView extends React.Component {
       error: null,
       name: props.listing.name,
       hostEmail: props.listing.email,
-<<<<<<< HEAD
       ownerEmail: null,
-=======
-      userEmail: '',
->>>>>>> Console log tests.
       zipcode: props.listing.zipcode,
       dogSizePreference: props.listing.dogSizePreference,
       dogBreedPreference: props.listing.dogBreedPreference,
@@ -41,8 +37,6 @@ export default class ProfileView extends React.Component {
     }
     //handle 'contact me'
 
-
-
     this.handleOpen = () => {
       this.setState({open: true});
     }
@@ -57,7 +51,7 @@ export default class ProfileView extends React.Component {
     }
 
     this.handleSendEmail = () => {
-      console.log(this.state.userEmail, this.state.hostEmail, this.state.date)
+      //console.log(this.state.userEmail, this.state.hostEmail, this.state.date)
       this.setState({open: false});
       const url = `/contacthost`;
       let body = {
@@ -65,7 +59,7 @@ export default class ProfileView extends React.Component {
         hostEmail: this.state.hostEmail,
         date: JSON.stringify(this.state.date)
       }
-      console.log('body',body)
+      //console.log('body',body)
       request
         .post(url)
         .send(body)
@@ -73,22 +67,18 @@ export default class ProfileView extends React.Component {
           if (err) {
             console.error('There was an error sending email: ', err)
           } else {
-            console.log(res);
+            console.log('SUCCESS:', res);
           }
         });
+      }
   }
-
 
 
   componentDidMount() {
     let token = localStorage.getItem('jwt');
     let decoded = jwt.decode(token);
-<<<<<<< HEAD
     //this.setState({name: decoded.name});
     this.setState({ownerEmail: decoded.email})
-=======
-    this.setState({userEmail: decoded.email})
->>>>>>> Console log tests.
   }
 
   // componentDidMount() {

@@ -36,7 +36,10 @@ export default class Main extends React.Component {
       renderProfile: false,
       openLogin: false,
       openRegister: false,
-      openLoginMessage: false
+      openLoginMessage: false,
+      guestBookings: [],
+      hostBookings: [],
+      user: {}
     }
 
     this.authLogin = () => {
@@ -131,10 +134,59 @@ export default class Main extends React.Component {
     this.handleSearch('');
     let token = localStorage.getItem('jwt');
     let decoded = jwt.decode(token);
+    if (decoded === null) {
+      return;
+    }
+    //request '/bookings/guest'
+    //this.setState({})
+    if(decoded !== undefined) {
+      request
+        .get('/bookings/guest')
+        .query({ email: decoded.email })
+        .end((err, res) => {
+          if (err) {
+            console.error(err)
+          } else {
+            //console.log("STAYING WITH:", res.body);
+            this.setState({
+              guestBookings: res.body
+            })
+          }
+        });
+
+      request
+        .get('/bookings/host')
+        .query({ email: decoded.email })
+        .end( (err, res) => {
+          if (err) {
+            console.error(err);
+          } else {
+          //  console.log("HOSTING:", res.body);
+            this.setState({
+              hostBookings: res.body
+            })
+          }
+        })
+      }
+
+      request
+        .get('/user')
+        .query({ email: decoded.email })
+        .end( (err, res) => {
+          if (err) {
+            console.error(err);
+          } else {
+          //  console.log("USER:", res.body);
+            this.setState({
+              user: res.body[0]
+            })
+          }
+        })
   }
 
   // Renders AppBar, Search, Drawer, and PostListing
   render() {
+    //console.log(this.state)
     const actions = [
       <FlatButton
         label="Login"
@@ -185,7 +237,7 @@ export default class Main extends React.Component {
         <ListingsContainer listings={this.state.listings} checkAuth={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
           <AppBar title="Sit-n-Paws Profile" onLeftIconButtonTouchTap={this.touchTap} style={{background: 'rgb(197, 186, 155)'}}/>
-          <ShowProfile/>
+          <ShowProfile guestBookings={this.state.guestBookings} hostBookings={this.state.hostBookings} user={this.state.user}/>
           <RaisedButton onClick={this.profileOnClick} label="Edit Profile" labelColor="white" style={this.styles} backgroundColor="rgb(197, 186, 155)" />
           {this.state.renderProfile ? <ProfileUpdate/> : null}
         </Drawer>
