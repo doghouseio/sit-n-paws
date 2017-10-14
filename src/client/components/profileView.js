@@ -7,6 +7,8 @@ import MyMap from './Map.js';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import jwt from 'jsonwebtoken';
 import masterUrl from '../utils/masterUrl.js';
+import request from 'superagent';
+
 
 export default class ProfileView extends React.Component {
   constructor(props) {
@@ -28,10 +30,12 @@ export default class ProfileView extends React.Component {
       pets: props.listing.pets,
       position: props.listing.position,
       date: null, //TODO, import date handling functionality
-      open: false
+      open: false,
+      // dogs: props.dogs[0],
+      // dogsPictures: null
     }
-
     //handle 'contact me'
+
 
 
     this.handleOpen = () => {
@@ -67,6 +71,18 @@ export default class ProfileView extends React.Component {
         });
     }
 
+    this.getDogData = (email, callback) => {
+      const url = '/dog?email=' +email;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          return res.body;
+        }
+
+      });
+    }
+
   }
 
 
@@ -76,6 +92,8 @@ export default class ProfileView extends React.Component {
     let decoded = jwt.decode(token);
     //this.setState({name: decoded.name});
     this.setState({userEmail: decoded.email})
+    console.log('doggy',this.state.dogs)
+
   }
 
   render() {
@@ -92,6 +110,11 @@ export default class ProfileView extends React.Component {
           onClick={this.handleSendEmail}
         />
     ];
+
+    this.getDogData('www', function(dogs) {
+      this.setState({dogs:dogs});
+      console.log('line78',this.state.dogs)
+
 
       return (
         <div>
@@ -114,6 +137,7 @@ export default class ProfileView extends React.Component {
               {`Preferred Dog Activities: ${this.state.dogActivityPreference}`} <br/>
               {`Yard Size: ${this.state.yard}. `} <br/>
               {`Pets: ${this.state.pets}`} <br/>
+
               {`Children: ${this.state.children}`} <br/>
               {`Description: ${this.state.homeAttributes}`}
             </div>
@@ -141,6 +165,8 @@ export default class ProfileView extends React.Component {
 
         </div>
       );
-
+    });
   };
+
 }
+

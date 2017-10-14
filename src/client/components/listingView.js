@@ -24,6 +24,7 @@ export default class ListingView extends React.Component {
       open: false,
       date: null,
       openProfileView: false,
+      dogs: null
     }
 
     // Opens the modal upon clicking contact me
@@ -47,29 +48,27 @@ export default class ListingView extends React.Component {
       this.setState({openProfileView: !this.state.openProfileView});
     }
 
-    // Sends the email by posting to the /contacthost endpoint on the server
-    this.handleSendEmail = () => {
-      this.setState({open: false});
-      const url = `/contacthost`;
-      request
-        .post(url)
-        .send({
-          ownerEmail: this.state.ownerEmail,
-          hostEmail: this.state.hostEmail,
-          date: JSON.stringify(this.state.date)
-        })
-        .end((err, res) => {
-          if (err) {
-            console.log('There was an error sending email: ', err)
-          } else {
-            console.log(res);
-          }
-        });
+    this.handleSearch = (term) => {
+      const url = `/listings/${term}`;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({ listings:res.body });
+        }
+      });
     }
+
+
 
     this.handleCardClick = (e) => {
       e.preventDefault();
+      // this.getDogData('www', function(dogs) {
+      //   this.setState({dogs:dogs});
+      //   console.log('line78',this.state.dogs)
+      // });
       this.profileView();
+
       console.log('clicked this listing',this.props.listing)
     }
 
@@ -139,3 +138,4 @@ export default class ListingView extends React.Component {
   }
 }
 // ListingView.propTypes = {listing: PropTypes.object.isRequired};
+// dogs={this.state.dogs}
