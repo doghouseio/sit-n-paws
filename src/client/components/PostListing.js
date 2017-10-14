@@ -66,10 +66,6 @@ export default class PostListing extends React.Component {
       formData.append("city", this.state.city);
       formData.append("state", this.state.state);
 
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
-
       let url = '/listings';
 
       submitListing(url, formData, (res) => {
