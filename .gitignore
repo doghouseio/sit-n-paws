@@ -14,5 +14,7 @@ src/public/dist/bundle.js
 cloudinary/config.js
 cloudinary
 
+geocode.js
+
 ## File Uploads ##
 uploads
