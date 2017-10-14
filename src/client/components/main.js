@@ -157,8 +157,8 @@ export default class Main extends React.Component {
       <div>
         <Toolbar style={{background: 'rgb(197, 186, 155)'}}>
           <ToolbarGroup firstChild={true}>
-            <IconButton onClick={this.postDog}><Pets/></IconButton>
-            <IconButton onClick={this.postListing}><ActionHome/></IconButton>
+            <IconButton tooltip="New dog!" tooltipPosition="bottom-right" onClick={this.postDog}><Pets/></IconButton>
+            <IconButton tooltip="New host listing!" tooltipPosition="bottom-right" onClick={this.postListing}><ActionHome/></IconButton>
           </ToolbarGroup>
 
           <ToolbarGroup>
@@ -187,8 +187,6 @@ export default class Main extends React.Component {
           <AppBar title="Sit-n-Paws Profile" onLeftIconButtonTouchTap={this.touchTap} style={{background: 'rgb(197, 186, 155)'}}/>
           <ShowProfile/>
           <RaisedButton onClick={this.profileOnClick} label="Edit Profile" labelColor="white" style={this.styles} backgroundColor="rgb(197, 186, 155)" />
-          <RaisedButton onClick={this.logoutOnClick} label="Log Out" labelColor="white" style={this.styles} backgroundColor="rgb(171, 94, 94)"/>
-          <RaisedButton onClick={this.postDog} label="Add dog profile" labelColor="white" style={this.styles} backgroundColor="rgb(171, 94, 94)"/>
           {this.state.renderProfile ? <ProfileUpdate/> : null}
         </Drawer>
 
