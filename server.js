@@ -208,6 +208,7 @@ app.post('/dog', dogUpload, (req, res, next) => {
 
 //returns User's dogs
 app.get('/dog', (req, res) => {
+  console.log(req,'req')
   var email = req.query.email;
   if (!email) {
     res.status(404).send('No email provided');
@@ -218,7 +219,7 @@ app.get('/dog', (req, res) => {
       console.log(err);
     } else {
       console.log('dogs',dogs[0].dogs)
-      res.send(dogs[0].dogs);
+      res.status(200).send(dogs[0].dogs);
       }
   })
 })

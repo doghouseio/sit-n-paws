@@ -59,16 +59,27 @@ export default class ListingView extends React.Component {
       });
     }
 
+    this.getDogData = (email, callback) => {
+      const url = '/dog?email=' +email;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('res68',res.body)
+          callback(res.body)
+        }
 
+      });
+    }
+    let outer = this;
+    this.getDogData('www', function(dogs) {
+      outer.setState({dogs:dogs});
+      console.log('line78',outer.state.dogs)
+    });
 
     this.handleCardClick = (e) => {
       e.preventDefault();
-      // this.getDogData('www', function(dogs) {
-      //   this.setState({dogs:dogs});
-      //   console.log('line78',this.state.dogs)
-      // });
       this.profileView();
-
       console.log('clicked this listing',this.props.listing)
     }
 
@@ -131,7 +142,7 @@ export default class ListingView extends React.Component {
           onRequestClose={this.profileView}
           autoScrollBodyContent={true}
         >
-          <ProfileView listing={this.props.listing} />
+          <ProfileView dogs={this.state.dogs} listing={this.props.listing} />
         </Dialog>
       </div>
     )
