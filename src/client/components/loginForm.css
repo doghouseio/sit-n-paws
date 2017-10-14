@@ -1,0 +1,97 @@
+* {
+    font-family: "Lato", sans-serif;
+}
+
+.login-wrapper {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-flow: row;
+}
+
+.login-container {
+  height: 100%;
+  text-align: center;
+  border: 2px solid black;
+}
+
+.login-title {
+  color: black;
+  font-size: 40px;
+  font-weight: 300;
+}
+
+.login-form {
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.login-form-control {
+  outline: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 60%;
+  border-radius: 3px;
+  padding: 6px 10px;
+  margin: 0 auto .5em auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
+}
+
+.login-form-control:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.login-form-control:focus {
+  background-color: white;
+  color: grey;
+}
+
+.login-btn {
+  background-color: grey;
+  border: 0;
+  color: black;
+  cursor: pointer;
+  font-weight: normal;
+  padding: 0;
+}
+
+.login-btn:hover {
+  background-color: #f5f7f9;
+}
+
+.login-link {
+  color: black;
+  text-align: center
+}
+
+.login-link:hover {
+  color: black;
+  padding-top: 10px
+}
+
+.login-warning {
+  color: red;
+  font-size: 1.2em;
+}
+
+.login-wrapper ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: grey;
+}
+.login-wrapper ::-moz-placeholder { /* Firefox 19+ */
+  color: grey;
+}
+.login-wrapper :-ms-input-placeholder { /* IE 10+ */
+  color: grey;
+}
+.login-wrapper :-moz-placeholder { /* Firefox 18- */
+  color: grey;
+}
