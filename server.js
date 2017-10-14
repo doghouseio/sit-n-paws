@@ -11,6 +11,8 @@ const cloudConfig = require('./cloudinary/config.js');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const upload = multer({dest: './uploads/'});
+const axios = require('axios');
+const geoKey = require('./geocode.js');
 let port = process.env.PORT || 3000
 
 // This is the shape of the object from the config file which is gitignored
@@ -235,6 +237,25 @@ let listingsUpload = upload.fields([{
 
 //handles posts for listings in db
 app.post('/listings', listingsUpload, (req, res, next) => {
+  //construct address out of request body
+  var mapUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=233+Harvest+Drive,+Vacaville,+CA&key=' + geoKey;
+  axios.get(mapUrl)
+  .then(function(response) {
+    // console.log('RESPONSE')
+    // console.log(JSON.stringify(response.data))
+    var location = [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
+    console.log(location);
+    next();
+  })
+  .catch(function(error) {
+    console.log(error);
+    var location = [];
+    next();
+  })
+
+  //send GET request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=
+  //on response
+  //save everything to database
   // The 'next()' is important as it ensures the images get sent
   // to the Cloudinary servers after the Listing and responses are
   // sent to the client, making the upload responsive
@@ -261,7 +282,8 @@ app.post('/listings', listingsUpload, (req, res, next) => {
         pets: req.body.pets,
         hostPictures: 'Image is being uploaded...',
         homePictures: 'Image is being uploaded...',
-        cost: req.body.cost
+        cost: req.body.cost,
+        location: location
       });
       newListing.save((err, host) => {
         if (err) {
