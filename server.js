@@ -45,7 +45,7 @@ app.post('/login', (req, res) => {
             if (match) {
               let payload = {
                 username: found.username,
-                name: found.name
+                name: found.name,
                 email: found.email
               };
               let token = jwt.sign(payload, 'Shaken, not stirred', {
@@ -257,6 +257,25 @@ app.get('/dogpics', (req, res) => {
         console.log('picUrls',pics)
         res.status(200).send(pics[0].dogsPictures);
       } else res.status(200).send()
+      }
+  })
+})
+
+//Gets user data
+app.get('/user', (req, res) => {
+  var email = req.query.email;
+  if (!email) {
+    res.status(404).send('No email provided');
+  }
+  User.find({email: email})
+  .exec((err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (user.length) {
+        res.status(200).send(user);
+      } else res.status(404).send()
+
       }
   })
 })
