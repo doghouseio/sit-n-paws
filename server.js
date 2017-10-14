@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./db/models/users');
 const Listing = require('./db/models/listing');
+const Booking = require('./db/models/booking');
 const jwt = require('jsonwebtoken');
 const seedListingDB = require('./seed');
 const cloudinary = require('cloudinary');
@@ -393,6 +394,64 @@ app.get('/listings/:zipcode', (req, res) => {
         }
       })
 })
+
+// {
+//     hostEmail: { type: String, required: true },
+//     guestEmail: { type: String, required: true },
+//     date: { type: String, required: true },
+//     confirmed: {type: Boolean, required: true}
+// }
+
+//Post a new booking
+app.post('/bookings', (req, res) => {
+  //construct address out of request body
+  var ownerEmail = req.body.ownerEmail;
+  var hostEmail = req.body.hostEmail;
+  var date = req.body.date;
+
+  var newBooking = new Booking({
+    guestEmail: ownerEmail,
+    hostEmail: hostEmail,
+    date: date,
+    confirmed: false
+  });
+
+  newBooking.save((err, booking) => {
+    if (err) {
+      res.status(404).send(err)
+    } else {
+      res.status(200).send(booking)
+    }
+  });
+});
+
+//Get all bookings that the user is hosting
+app.get('/bookings/host', (req, res) => {
+  let email = req.query.email
+  Booking.find({hostEmail: email})
+    .exec((err, hostings) => {
+      if (err) {
+        console.log('error');
+      } else {
+        res.send(hostings);
+      }
+    })
+})
+
+//Get all bookings that the user is patronizing
+app.get('/bookings/guest', (req, res) => {
+  let email = req.query.email
+  Booking.find({guestEmail: email})
+    .exec((err, booking) => {
+      if (err) {
+        console.log('error');
+      } else {
+        res.send(booking);
+      }
+    })
+})
+
+
 
 //handles requests for contacting host, sends email to host
 app.post('/contacthost', (req, res) => {
