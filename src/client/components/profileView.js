@@ -17,6 +17,7 @@ export default class ProfileView extends React.Component {
       error: null,
       name: props.listing.name,
       hostEmail: props.listing.email,
+      ownerEmail: null,
       zipcode: props.listing.zipcode,
       dogSizePreference: props.listing.dogSizePreference,
       dogBreedPreference: props.listing.dogBreedPreference,
@@ -55,13 +56,15 @@ export default class ProfileView extends React.Component {
     this.handleSendEmail = () => {
       this.setState({open: false});
       const url = `/contacthost`;
+      let body = {
+        ownerEmail: this.state.ownerEmail,
+        hostEmail: this.state.hostEmail,
+        date: JSON.stringify(this.state.date)
+      }
+      console.log('body',body)
       request
         .post(url)
-        .send({
-          ownerEmail: this.state.userEmail,
-          hostEmail: this.state.hostEmail,
-          date: JSON.stringify(this.state.date)
-        })
+        .send(body)
         .end((err, res) => {
           if (err) {
             console.log('There was an error sending email: ', err)
@@ -78,7 +81,7 @@ export default class ProfileView extends React.Component {
     let token = localStorage.getItem('jwt');
     let decoded = jwt.decode(token);
     //this.setState({name: decoded.name});
-    this.setState({userEmail: decoded.email})
+    this.setState({ownerEmail: decoded.email})
   }
 
   render() {

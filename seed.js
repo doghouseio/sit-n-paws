@@ -42,7 +42,7 @@ const mockCompleteUser = [
   {
     username: 'chrispfaff10',
     password: '1234',
-    email: 'chrispfaff10@gmail.com',
+    email: 'chrispfaff1@gmail.com',
     name: 'Chris Tester',
     phone: '561-123-5155',
     address: '13 Main Street',

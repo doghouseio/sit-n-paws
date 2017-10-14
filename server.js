@@ -45,7 +45,8 @@ app.post('/login', (req, res) => {
             if (match) {
               let payload = {
                 username: found.username,
-                name: found.name
+                name: found.name,
+                email: found.email
               };
               let token = jwt.sign(payload, 'Shaken, not stirred', {
                 expiresIn: '1h'
@@ -260,6 +261,25 @@ app.get('/dogpics', (req, res) => {
   })
 })
 
+//Gets user data
+app.get('/user', (req, res) => {
+  var email = req.query.email;
+  if (!email) {
+    res.status(404).send('No email provided');
+  }
+  User.find({email: email})
+  .exec((err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (user.length) {
+        res.status(200).send(user);
+      } else res.status(404).send()
+
+      }
+  })
+})
+
 //Check post listing for uploaded files and stores in req.files
 let listingsUpload = upload.fields([{
   name: 'hostPictures',
@@ -403,27 +423,28 @@ app.get('/listings/:zipcode', (req, res) => {
 // }
 
 //Post a new booking
-app.post('/bookings', (req, res) => {
-  //construct address out of request body
-  var ownerEmail = req.body.ownerEmail;
-  var hostEmail = req.body.hostEmail;
-  var date = req.body.date;
+///////THIS WAS MOVED TO 'contacthost' endpoint
+// app.post('/bookings', (req, res) => {
+//   //construct address out of request body
+//   var ownerEmail = req.body.ownerEmail;
+//   var hostEmail = req.body.hostEmail;
+//   var date = req.body.date;
 
-  var newBooking = new Booking({
-    guestEmail: ownerEmail,
-    hostEmail: hostEmail,
-    date: date,
-    confirmed: false
-  });
+//   var newBooking = new Booking({
+//     guestEmail: ownerEmail,
+//     hostEmail: hostEmail,
+//     date: date,
+//     confirmed: false
+//   });
 
-  newBooking.save((err, booking) => {
-    if (err) {
-      res.status(404).send(err)
-    } else {
-      res.status(200).send(booking)
-    }
-  });
-});
+//   newBooking.save((err, booking) => {
+//     if (err) {
+//       res.status(404).send(err)
+//     } else {
+//       res.status(200).send(booking)
+//     }
+//   });
+// });
 
 //Get all bookings that the user is hosting
 app.get('/bookings/host', (req, res) => {
@@ -455,9 +476,18 @@ app.get('/bookings/guest', (req, res) => {
 
 //handles requests for contacting host, sends email to host
 app.post('/contacthost', (req, res) => {
+  console.log('reqq', req.body)
   var ownerEmail = req.body.ownerEmail;
   var hostEmail = req.body.hostEmail;
   var date = req.body.date;
+
+  var newBooking = new Booking({
+    guestEmail: ownerEmail,
+    hostEmail: hostEmail,
+    date: date,
+    confirmed: false
+  });
+
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -478,8 +508,17 @@ app.post('/contacthost', (req, res) => {
     } else {
       console.log('Email sent: ' + response.response);
       res.json({hi: response.response});
+
+      newBooking.save((err, booking) => {
+        if (err) {
+          console.log('errr',err)
+        } else {
+          console.log('success', booking)
+        }
+      });
     }
   });
+
 })
 
 app.get('*', (req, res) => {
