@@ -403,27 +403,28 @@ app.get('/listings/:zipcode', (req, res) => {
 // }
 
 //Post a new booking
-app.post('/bookings', (req, res) => {
-  //construct address out of request body
-  var ownerEmail = req.body.ownerEmail;
-  var hostEmail = req.body.hostEmail;
-  var date = req.body.date;
+///////THIS WAS MOVED TO 'contacthost' endpoint
+// app.post('/bookings', (req, res) => {
+//   //construct address out of request body
+//   var ownerEmail = req.body.ownerEmail;
+//   var hostEmail = req.body.hostEmail;
+//   var date = req.body.date;
 
-  var newBooking = new Booking({
-    guestEmail: ownerEmail,
-    hostEmail: hostEmail,
-    date: date,
-    confirmed: false
-  });
+//   var newBooking = new Booking({
+//     guestEmail: ownerEmail,
+//     hostEmail: hostEmail,
+//     date: date,
+//     confirmed: false
+//   });
 
-  newBooking.save((err, booking) => {
-    if (err) {
-      res.status(404).send(err)
-    } else {
-      res.status(200).send(booking)
-    }
-  });
-});
+//   newBooking.save((err, booking) => {
+//     if (err) {
+//       res.status(404).send(err)
+//     } else {
+//       res.status(200).send(booking)
+//     }
+//   });
+// });
 
 //Get all bookings that the user is hosting
 app.get('/bookings/host', (req, res) => {
@@ -455,9 +456,18 @@ app.get('/bookings/guest', (req, res) => {
 
 //handles requests for contacting host, sends email to host
 app.post('/contacthost', (req, res) => {
+  console.log('reqq', req.body)
   var ownerEmail = req.body.ownerEmail;
   var hostEmail = req.body.hostEmail;
   var date = req.body.date;
+
+  var newBooking = new Booking({
+    guestEmail: ownerEmail,
+    hostEmail: hostEmail,
+    date: date,
+    confirmed: false
+  });
+
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -478,8 +488,17 @@ app.post('/contacthost', (req, res) => {
     } else {
       console.log('Email sent: ' + response.response);
       res.json({hi: response.response});
+
+      newBooking.save((err, booking) => {
+        if (err) {
+          console.log('errr',err)
+        } else {
+          console.log('success', booking)
+        }
+      });
     }
   });
+
 })
 
 app.get('*', (req, res) => {
