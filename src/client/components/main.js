@@ -191,7 +191,7 @@ export default class Main extends React.Component {
           onRequestClose={this.loginToggle}
           autoScrollBodyContent={true}
         >
-          <LoginForm />
+          <LoginForm onSuccess={this.loginToggle} onSwitch={this.registerToggle}/>
         </Dialog>
 
         <Dialog
@@ -200,13 +200,14 @@ export default class Main extends React.Component {
           onRequestClose={this.registerToggle}
           autoScrollBodyContent={true}
         >
-          <RegisterForm />
+          <RegisterForm onSuccess={this.registerToggle} onSwitch={this.loginToggle}/>
         </Dialog>
 
         <Dialog
           title="Users Only!"
           actions={actions}
           modal={false}
+          onRequestClose={this.loginMessageToggle}
           open={this.state.openLoginMessage}
         >
         </Dialog>

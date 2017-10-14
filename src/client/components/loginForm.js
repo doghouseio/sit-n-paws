@@ -27,12 +27,19 @@ export default class LoginForm extends Component {
       LoginSubmit('/login', credentials, (res) => {
         if(res.success === true) {
             localStorage.setItem('jwt', res.token);
+            this.props.onSuccess();
           } else {
             this.setState({formWarning: res.error});
           }
       });
     }
   }
+
+  handleSwitch(e) {
+      this.props.onSuccess();
+      this.props.onSwitch();
+  }
+
   validateForm() {
     if (!this.state.username) {
       this.setState({formWarning: 'Please enter a username'});
@@ -67,9 +74,12 @@ export default class LoginForm extends Component {
                 <FlatButton type="submit" primary={true} className="login-btn login-form-control" label="Login" />
               </div>
               {this.state.formWarning && (<div className="login-warning">{this.state.formWarning}</div>)}
-              <div className="login-form-control">
-                <button className="login-link">Register</button>
-              </div>
+              <FlatButton
+                className="login-link login-form-control"
+                fullWidth={true}
+                label="Need an account? Register here!"
+                onClick={e => this.handleSwitch(e)}
+              />
             </form>
           </div>
       </MuiThemeProvider>

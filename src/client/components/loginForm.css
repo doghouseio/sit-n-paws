@@ -61,6 +61,7 @@
   color: black;
   cursor: pointer;
   font-weight: normal;
+  padding: 0;
 }
 
 .login-btn:hover {
@@ -69,6 +70,7 @@
 
 .login-link {
   color: black;
+  text-align: center
 }
 
 .login-link:hover {

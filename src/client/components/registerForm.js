@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import LoginSubmit from '../utils/login';
 import './loginForm.css';
 
@@ -29,11 +30,17 @@ export default class RegisterForm extends Component {
         LoginSubmit('/signup', credentials, (res) => {
           if(res.success === true) {
               localStorage.setItem('jwt', res.token);
+              this.props.onSuccess();
             } else {
               this.setState({formWarning: res.error});
             }
         });
       }
+    }
+
+    this.handleSwitch = (e) => {
+      this.props.onSuccess();
+      this.props.onSwitch();
     }
   }
 
@@ -87,11 +94,14 @@ export default class RegisterForm extends Component {
                   placeholder="Confirm password"
                   onChange={e => this.setState({'confPassword': e.target.value})}
                 />
-                <FlatButton type="submit" primary={true} className="login-btn login-form-control" label="Register" />
+                <RaisedButton type="submit" primary={true} className="login-btn login-form-control" label="Register" />
                 {this.state.formWarning && (<div className="login-warning">{this.state.formWarning}</div>)}
-                <div className="login-form-control">
-                  <button className="login-link">Already have an account? Login now</button>
-                </div>
+                <FlatButton
+                  className="login-link login-form-control"
+                  fullWidth={true}
+                  label="Already have an account? Login here."
+                  onClick={e => this.handleSwitch(e)}
+                />
               </form>
             </div>
         </MuiThemeProvider>
