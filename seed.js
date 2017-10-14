@@ -96,14 +96,16 @@ const seedListingDB = () => {
         if(err) {
           console.log(err);
         }
-        let reformatUser = JSON.stringify(mockCompleteUser[2]);
-        let newUser = new User(JSON.parse(reformatUser));
-        // add user mary444 to database
-        newUser.save((err) => {
-          if(err) {
-            console.log(err);
-          }
-        })
+        mockCompleteUser.forEach((user) => {
+          let reformatUser = JSON.stringify(user);
+          let newUser = new User(JSON.parse(reformatUser));
+          // add user mary444 to database
+          newUser.save((err) => {
+            if(err) {
+              console.log(err);
+            }
+          })
+        });
         // iterate over mock listings, format, and save each listing into the database
         listingsData.forEach((listing) => {
           // reformat data to strings for parsing before saving

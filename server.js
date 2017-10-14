@@ -123,11 +123,21 @@ app.post('/profile', (req, res) => {
     phone: req.body.phone,
     address: req.body.address
   };
+  var updateListing = {
+    name: req.body.name,
+  }
   User.findOneAndUpdate({email: email}, updateProfile, function(err) {
     if(err) {
       console.log(err);
     } else {
       console.log('Profile update success!');
+    }
+  })
+  Listing.findOneAndUpdate({email: email}, updateListing, function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Listing update success!')
     }
   })
 });
