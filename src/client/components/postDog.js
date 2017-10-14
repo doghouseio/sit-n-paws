@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import submitDog from '../utils/submitDog.js';
 import jwt from 'jsonwebtoken';
+import TextField from 'material-ui/TextField';
 import masterUrl from '../utils/masterUrl.js';
 
 export default class PostDog extends React.Component {
@@ -87,23 +88,17 @@ export default class PostDog extends React.Component {
             <div className="postListing">
               <div className="postListing-label">
 
-                <label>Dog's name:</label><br />
-                <input type="text" name="name" value={this.state.name} /><br />
+                <TextField floatingLabelText="Dog's name" value={this.state.name} name="name"/>
 
-                <label>Dog's size:</label><br />
-                <input type="text" name="dogSize" value={this.state.dogSize} /><br />
+                <TextField floatingLabelText="Dog's size" value={this.state.dogSize} name="dogSize"/>
 
-                <label>Dog's breed:</label><br />
-                <input type="text" name="dogBreed" value={this.state.dogBreed} /><br />
+                <TextField floatingLabelText="Dog's breed" value={this.state.dogBreed} name="dogBreed"/>
 
-                <label>Dog's activity requirements (minutes/day)</label><br />
-                <input type="text" name="dogActivityReq" value={this.state.dogActivityReq} /><br />
+                <TextField floatingLabelText="Dog's activity requirements" value={this.state.dogActivityReq} name="dogActivityReq"/>
 
-                <label>Dog's story:</label><br />
-                <input type="text" name="bio" value={this.state.bio} /><br />
+                <TextField floatingLabelText="Dog's story" value={this.state.bio} multiLine={true} rows={2} name="bio"/>
 
-                <label>Dog's age:</label><br />
-                <input type="text" name="age" value={this.state.age} /><br />
+                <TextField floatingLabelText="Dog's age" value={this.state.age} name="age"/>
 
                 <label htmlFor="dogPicture" className="postListing-fileLabel">{this.state.dogPicture ? this.state.dogPicture.name : `Choose a Picture of your dog`}</label><br />
                 <input type="file" name="dogPicture" id="dogPicture" className="postListing-file" /><br />

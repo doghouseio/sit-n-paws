@@ -2,8 +2,10 @@ import React from 'react';
 import ListingView from './listingView';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import LoginSubmit from '../utils/login';
 import masterUrl from '../utils/masterUrl.js';
+
 
 
 export default class ProfileUpdate extends React.Component {
@@ -56,19 +58,16 @@ export default class ProfileUpdate extends React.Component {
         <h1>Edit Your Profile</h1>
         <form onChange={this.setField}>
           <fieldset>
-            <legend>Enter Your Email</legend>
             <br />
-            <input type="text" value={this.state.email} name="email" />
-            <br />
-            <br />
-            <label>Name:</label>
-            <input type="text" value={this.state.name} name="name" />
-            <br />
-            <label>Phone:</label>
-            <input type="text" value={this.state.phone} name="phone" />
-            <br />
-            <label>Address:</label>
-            <input type="text" value={this.state.address} name="address" />
+
+            <TextField floatingLabelText="Email" value={this.state.email} name="email"/>
+
+            <TextField floatingLabelText="Name" value={this.state.name} name="name"/>
+
+            <TextField floatingLabelText="Phone" value={this.state.phone} name="phone"/>
+
+            <TextField floatingLabelText="Address" value={this.state.address} name="address"/>
+
           </fieldset>
         </form>
         <br />
