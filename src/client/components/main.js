@@ -182,7 +182,7 @@ export default class Main extends React.Component {
           </ToolbarGroup>
         </Toolbar>
 
-        <ListingsContainer listings={this.state.listings} />
+        <ListingsContainer listings={this.state.listings} checkAuth={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
           <AppBar title="Sit-n-Paws Profile" onLeftIconButtonTouchTap={this.touchTap} style={{background: 'rgb(197, 186, 155)'}}/>
           <ShowProfile/>

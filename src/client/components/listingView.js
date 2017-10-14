@@ -97,12 +97,13 @@ export default class ListingView extends React.Component {
     });
 
     this.handleCardClick = (e) => {
-      e.preventDefault();
-      this.profileView();
-      console.log('clicked this listing',this.props.listing)
+      e && e.preventDefault();
+      if (this.props.checkAuth()) {
+        this.profileView();
+      } else {
+        this.props.openLoginMessage();
+      }
     }
-
-
   }
 
   // When component loads, retrieves and decodes jwt and extracts user's email
@@ -136,11 +137,17 @@ export default class ListingView extends React.Component {
     return (
       <div>
         <Card onClick={this.handleCardClick}>
+        {this.props.checkAuth() ?
           <CardHeader
             title={this.props.listing.name}
             subtitle={"Puppy Lover in: " + this.props.listing.zipcode}
             avatar={this.props.listing.hostPictures}
           />
+          :
+          <CardHeader
+            subtitle="Login to see details and book!"
+          />
+        }
           <CardMedia
             overlay={<CardTitle title={`$${this.props.listing.cost} Per Night!`} subtitle={this.props.listing.homeAttributes} />}
           >
