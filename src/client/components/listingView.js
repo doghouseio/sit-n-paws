@@ -24,7 +24,8 @@ export default class ListingView extends React.Component {
       open: false,
       date: null,
       openProfileView: false,
-      dogs: null
+      dogs: null,
+      dogsPictures: null
     }
 
     // Opens the modal upon clicking contact me
@@ -71,10 +72,28 @@ export default class ListingView extends React.Component {
 
       });
     }
+
+    this.getDogPictureData = (email, callback) => {
+      const url = '/dogpics?email=' +email;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          callback(res.body)
+        }
+      });
+    }
+
+
     let outer = this;
+    // this.getDogData(outer.state.hostEmail, function(dogs) {
     this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
-      console.log('line78',outer.state.dogs)
+      console.log('line91',outer.state.dogs)
+    });
+    this.getDogPictureData(outer.state.hostEmail, function(pics) {
+      outer.setState({dogsPictures:pics});
+      console.log('line95',outer.state.dogsPictures)
     });
 
     this.handleCardClick = (e) => {
@@ -142,7 +161,7 @@ export default class ListingView extends React.Component {
           onRequestClose={this.profileView}
           autoScrollBodyContent={true}
         >
-          <ProfileView dogs={this.state.dogs} listing={this.props.listing} />
+          <ProfileView dogsPictures={this.state.dogsPictures} dogs={this.state.dogs} listing={this.props.listing} />
         </Dialog>
       </div>
     )
