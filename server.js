@@ -238,20 +238,23 @@ let listingsUpload = upload.fields([{
 //handles posts for listings in db
 app.post('/listings', listingsUpload, (req, res, next) => {
   //construct address out of request body
-  var mapUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=233+Harvest+Drive,+Vacaville,+CA&key=' + geoKey;
+  var street = req.body.street.split(' ').join('+');
+  var city = req.body.city.split(' ').join('+');
+  var state = req.body.state;
+  var mapUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${street},${city},${state}&key=${geoKey}`
+  var location = [];
+  //var mapUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=233+Harvest+Drive,+Vacaville,+CA&key=' + geoKey;
   axios.get(mapUrl)
   .then(function(response) {
     // console.log('RESPONSE')
     // console.log(JSON.stringify(response.data))
-    var location = [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
+    location = [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
     console.log(location);
-    next();
   })
   .catch(function(error) {
     console.log(error);
-    var location = [];
-    next();
   })
+  .then(() => Listing.findOne({name: req.body.name}))
 
   //send GET request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=
   //on response
@@ -259,11 +262,11 @@ app.post('/listings', listingsUpload, (req, res, next) => {
   // The 'next()' is important as it ensures the images get sent
   // to the Cloudinary servers after the Listing and responses are
   // sent to the client, making the upload responsive
-  Listing.findOne({name: req.body.name})
+
   .then((found) => {
     if (found) {
       // update Listing
-      Listing.update(req.body);
+      Listing.update(Object.assign({}, req.body, {location: location}));
       res.json({success: true, message: 'Thank you, your listing has been successfully updated!', listing: found});
       next();
     } else {
