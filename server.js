@@ -12,7 +12,7 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 const upload = multer({dest: './uploads/'});
 const axios = require('axios');
-const geoKey = require('./geocode.js');
+const geoKey = process.env.GEOCODE_API || require('./geocode.js');
 let port = process.env.PORT || 3000
 
 // This is the shape of the object from the config file which is gitignored
