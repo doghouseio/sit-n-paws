@@ -144,7 +144,7 @@ export default class ProfileView extends React.Component {
               {`Description: ${this.state.homeAttributes}`}
             </div>
             <div className="dogs-info">
-              <h2>Dog's living here</h2>
+              <h2>Dog(s) living here</h2>
               <RenderDogs pics={this.state.dogsPictures} dogs={this.state.dogs} />
 
             </div>
