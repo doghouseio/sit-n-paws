@@ -6,7 +6,7 @@ listingSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
-    zipcode: { type: Number, required: true },
+    zipcode: { type: String, required: true },
     dogSizePreference: { type: String, required: true },
     dogBreedPreference: { type: String, required: true },
     dogActivityPreference: { type: String, required: true },

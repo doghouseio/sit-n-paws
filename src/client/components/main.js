@@ -114,6 +114,7 @@ export default class Main extends React.Component {
         </Drawer>
         <Dialog
           modal={false}
+          title="Host A Dog Today!"
           open={this.state.openPostListing}
           onRequestClose={this.postListing}
           autoScrollBodyContent={true}

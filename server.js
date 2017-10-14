@@ -266,7 +266,7 @@ app.post('/listings', listingsUpload, (req, res, next) => {
   .then((found) => {
     if (found) {
       // update Listing
-      Listing.update(Object.assign({}, req.body, {location: location}));
+      Listing.update(Object.assign({}, req.body, {position: location}));
       res.json({success: true, message: 'Thank you, your listing has been successfully updated!', listing: found});
       next();
     } else {
@@ -286,7 +286,7 @@ app.post('/listings', listingsUpload, (req, res, next) => {
         hostPictures: 'Image is being uploaded...',
         homePictures: 'Image is being uploaded...',
         cost: req.body.cost,
-        location: location
+        position: location
       });
       newListing.save((err, host) => {
         if (err) {
