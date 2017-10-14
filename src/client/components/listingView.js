@@ -24,6 +24,7 @@ export default class ListingView extends React.Component {
       open: false,
       date: null,
       openProfileView: false,
+      dogs: null
     }
 
     // Opens the modal upon clicking contact me
@@ -47,25 +48,34 @@ export default class ListingView extends React.Component {
       this.setState({openProfileView: !this.state.openProfileView});
     }
 
-    // Sends the email by posting to the /contacthost endpoint on the server
-    this.handleSendEmail = () => {
-      this.setState({open: false});
-      const url = `/contacthost`;
-      request
-        .post(url)
-        .send({
-          ownerEmail: this.state.ownerEmail,
-          hostEmail: this.state.hostEmail,
-          date: JSON.stringify(this.state.date)
-        })
-        .end((err, res) => {
-          if (err) {
-            console.log('There was an error sending email: ', err)
-          } else {
-            console.log(res);
-          }
-        });
+    this.handleSearch = (term) => {
+      const url = `/listings/${term}`;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({ listings:res.body });
+        }
+      });
     }
+
+    this.getDogData = (email, callback) => {
+      const url = '/dog?email=' +email;
+      request.get(url, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('res68',res.body)
+          callback(res.body)
+        }
+
+      });
+    }
+    let outer = this;
+    this.getDogData(outer.state.hostEmail, function(dogs) {
+      outer.setState({dogs:dogs});
+      console.log('line78',outer.state.dogs)
+    });
 
     this.handleCardClick = (e) => {
       e.preventDefault();
@@ -132,10 +142,11 @@ export default class ListingView extends React.Component {
           onRequestClose={this.profileView}
           autoScrollBodyContent={true}
         >
-          <ProfileView listing={this.props.listing} />
+          <ProfileView dogs={this.state.dogs} listing={this.props.listing} />
         </Dialog>
       </div>
     )
   }
 }
 // ListingView.propTypes = {listing: PropTypes.object.isRequired};
+// dogs={this.state.dogs}
