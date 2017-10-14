@@ -11,6 +11,8 @@ const cloudConfig = require('./cloudinary/config.js');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const upload = multer({dest: './uploads/'});
+const axios = require('axios');
+const geoKey = process.env.GEOCODE_API || require('./geocode.js');
 let port = process.env.PORT || 3000
 
 // This is the shape of the object from the config file which is gitignored
@@ -24,6 +26,7 @@ cloudinary.config(cloudConfig);
 const app = express();
 app.use(express.static((__dirname + '/src/public')));
 app.use(bodyParser.json());
+
 seedListingDB();
 
 //handles log in information in the db, creates jwt
@@ -129,7 +132,13 @@ app.post('/profile', (req, res) => {
   })
 });
 
-app.post('/dog', (req, res) => {
+
+let dogUpload = upload.fields([{
+  name: 'dogPictures',
+  maxCount: 1
+}]);
+
+app.post('/dog', dogUpload, (req, res, next) => {
   var email = req.body.email;
   console.log('Request body', req.body)
 
@@ -139,8 +148,8 @@ app.post('/dog', (req, res) => {
     dogBreed: req.body.dogBreed,
     dogActivityReq: req.body.dogActivityReq,
     bio: req.body.bio,
-    dogPictures: req.body.dogPictures,
-    age: req.body.age,
+    dogPictures: "Picture is being uploaded...",
+    age: req.body.age
   }
   User.findOneAndUpdate(
     email,
@@ -149,13 +158,54 @@ app.post('/dog', (req, res) => {
       }
     }
     , function(err, dogs) {
-      console.log('response',dogs[0].dogs)
+      console.log('response',dogs)
       if(err) {
         res.status(404).send(err);
       } else {
-        res.status(200).send()
+        res.status(200).send();
       }
+      //next();
   })
+}, (req, res) => {
+  // Sends files to the Cloudinary servers and updates entries in the database
+  if (req.files.dogPictures) {
+    console.log('Send to cloudinary!', req.files.dogPictures[0].path);
+    cloudinary.v2.uploader.upload(req.files.dogPictures[0].path, (err, result) => {
+      if(err) {
+        console.log('Cloudinary error: ', err);
+      }
+      console.log('Dog Picture url: ', result.url)
+      User.findOneAndUpdate(
+        req.body.email,
+        { $push: {
+            dogsPictures: result.url
+          }
+        }
+        , function(err, dogs) {
+          console.log('response',dogs)
+          if(err) {
+            res.status(404).send(err);
+          } else {
+            res.status(200).send();
+          }
+          next();
+      })
+
+
+      User.findOneAndUpdate({ email: req.body.email },
+        {
+          "dogs.$": {
+            dogPictures: result.url
+        }
+      }, (err, found) => {
+      // User.findOneAndModify({email: req.body.email}, {dogs: {dogPictures: result.url}}, (err, found) => {
+        if (err) {
+          console.log('Could not update picture',err);
+        }
+        console.log('Updated Dog Pictures: ', found);
+      });
+    });
+  }
 });
 
 //returns User's dogs
@@ -184,16 +234,39 @@ let listingsUpload = upload.fields([{
   maxCount: 1
 }]);
 
+
 //handles posts for listings in db
 app.post('/listings', listingsUpload, (req, res, next) => {
+  //construct address out of request body
+  var street = req.body.street.split(' ').join('+');
+  var city = req.body.city.split(' ').join('+');
+  var state = req.body.state;
+  var mapUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${street},${city},${state}&key=${geoKey}`
+  var location = [];
+  //var mapUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=233+Harvest+Drive,+Vacaville,+CA&key=' + geoKey;
+  axios.get(mapUrl)
+  .then(function(response) {
+    // console.log('RESPONSE')
+    // console.log(JSON.stringify(response.data))
+    location = [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
+    console.log(location);
+  })
+  .catch(function(error) {
+    console.log(error);
+  })
+  .then(() => Listing.findOne({name: req.body.name}))
+
+  //send GET request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=
+  //on response
+  //save everything to database
   // The 'next()' is important as it ensures the images get sent
   // to the Cloudinary servers after the Listing and responses are
   // sent to the client, making the upload responsive
-  Listing.findOne({name: req.body.name})
+
   .then((found) => {
     if (found) {
       // update Listing
-      Listing.update(req.body);
+      Listing.update(Object.assign({}, req.body, {position: location}));
       res.json({success: true, message: 'Thank you, your listing has been successfully updated!', listing: found});
       next();
     } else {
@@ -212,7 +285,8 @@ app.post('/listings', listingsUpload, (req, res, next) => {
         pets: req.body.pets,
         hostPictures: 'Image is being uploaded...',
         homePictures: 'Image is being uploaded...',
-        cost: req.body.cost
+        cost: req.body.cost,
+        position: location
       });
       newListing.save((err, host) => {
         if (err) {
