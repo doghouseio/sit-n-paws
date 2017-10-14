@@ -46,6 +46,7 @@ app.post('/login', (req, res) => {
               let payload = {
                 username: found.username,
                 name: found.name
+                email: found.email
               };
               let token = jwt.sign(payload, 'Shaken, not stirred', {
                 expiresIn: '1h'
