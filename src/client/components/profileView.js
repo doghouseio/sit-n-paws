@@ -37,8 +37,6 @@ export default class ProfileView extends React.Component {
     }
     //handle 'contact me'
 
-
-
     this.handleOpen = () => {
       this.setState({open: true});
     }
@@ -50,10 +48,10 @@ export default class ProfileView extends React.Component {
 
     this.handleChangeDate = (e, date) => {
       this.setState({date: date});
-      console.log(date);
     }
 
     this.handleSendEmail = () => {
+      //console.log(this.state.userEmail, this.state.hostEmail, this.state.date)
       this.setState({open: false});
       const url = `/contacthost`;
       let body = {
@@ -61,20 +59,19 @@ export default class ProfileView extends React.Component {
         hostEmail: this.state.hostEmail,
         date: JSON.stringify(this.state.date)
       }
-      console.log('body',body)
+      //console.log('body',body)
       request
         .post(url)
         .send(body)
         .end((err, res) => {
           if (err) {
-            console.log('There was an error sending email: ', err)
+            console.error('There was an error sending email: ', err)
           } else {
-            console.log(res);
+            console.log('SUCCESS:', res);
           }
         });
-    }
+      }
   }
-
 
 
   componentDidMount() {
@@ -83,6 +80,13 @@ export default class ProfileView extends React.Component {
     //this.setState({name: decoded.name});
     this.setState({ownerEmail: decoded.email})
   }
+
+  // componentDidMount() {
+  //   let token = localStorage.getItem('jwt');
+  //   let decoded = jwt.decode(token);
+  //   this.setState({name: decoded.name});
+  //   this.setState({email: decoded.email});
+  // }
 
   render() {
       const actions = [
