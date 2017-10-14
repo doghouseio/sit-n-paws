@@ -4,21 +4,23 @@ class Search extends React.Component {
   constructor() {
     super();
     this.state = {
-      query: ''
+      query: '',
     }
   }
 
   //handles input in search
   onInputChange(query) {
     this.setState({query});
-    this.props.onChange(query);
+    if (this.props.authLogin()) {
+      this.props.onChange(query);
+    }
   }
 
   render() {
     return (
       <div>
         <input className="searchBar"
-               placeholder="Enter a Zipcode to Get Started!"
+               placeholder={this.props.authLogin() ? "Search by ZIP!" : "Login to search"}
                type="text"
                onChange={event => this.onInputChange(event.target.value)} />
         </div>

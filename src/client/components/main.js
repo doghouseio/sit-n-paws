@@ -2,6 +2,8 @@ import React from 'react';
 import ListingsContainer from './listingsContainer.js';
 import PostListing from './PostListing.js';
 import PostDog from './postDog.js';
+import LoginForm from './loginForm.js';
+import RegisterForm from './registerForm.js';
 import jwt from 'jsonwebtoken';
 import ProfileUpdate from './profileForm.js';
 import ShowProfile from './showProfile.js';
@@ -11,10 +13,12 @@ import request from 'superagent';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Pets from 'material-ui/svg-icons/action/pets';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 
 // This component is the upper level component for all other components.
@@ -29,12 +33,27 @@ export default class Main extends React.Component {
       openPostListing: false,
       openPostDog: false,
       renderProfile: false,
+      openLogin: false,
+      openRegister: false,
+      openLoginMessage: false
     }
 
+    this.authLogin = () => {
+      let token = localStorage.getItem('jwt');
+      if (token !== "undefined" && token !== null && token !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     // Drawer - Opens the side drawer for my profile
     this.touchTap = () => {
-      this.setState({openDrawer: !this.state.openDrawer});
+      if (this.authLogin()) {
+        this.setState({openDrawer: !this.state.openDrawer});
+      } else {
+        this.setState({openLoginMessage: !this.state.openLoginMessage})
+      }
     }
 
     // Drawer - Styles for the side drawer buttons
@@ -64,6 +83,18 @@ export default class Main extends React.Component {
       this.setState({openPostDog: !this.state.openPostDog});
     }
 
+    this.loginToggle = () => {
+      this.setState({openLogin: !this.state.openLogin});
+    };
+
+    this.registerToggle = () => {
+      this.setState({openRegister: !this.state.openRegister});
+    };
+
+    this.loginMessageToggle = () => {
+      this.setState({openLoginMessage: !this.state.openLoginMessage});
+    };
+
     // Search - live search by zipcode
     this.handleSearch = (term) => {
       const url = `/listings/${term}`;
@@ -86,23 +117,45 @@ export default class Main extends React.Component {
 
   // Renders AppBar, Search, Drawer, and PostListing
   render() {
+    const actions = [
+      <FlatButton
+        label="Login"
+        primary={true}
+        onClick={this.loginToggle}
+      />,
+      <FlatButton
+        label="Register"
+        primary={true}
+        onClick={this.registerToggle}
+      />,
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.loginMessageToggle}
+      />,
+    ];
     return (
       <MuiThemeProvider>
       <div>
-        <AppBar
-        title="Become A Pet Host!"
-        iconElementLeft={<IconButton><Pets/></IconButton>}
+        <Toolbar style={{background: 'rgb(197, 186, 155)'}}>
+          <ToolbarGroup firstChild={true}>
+            <IconButton onClick={this.postListing}><Pets/></IconButton>
+          </ToolbarGroup>
 
-        iconElementRight={<IconButton><NavigationMenu/></IconButton>}
-        onRightIconButtonTouchTap={this.touchTap}
-        onLeftIconButtonTouchTap={this.postListing}
+          <ToolbarGroup>
+            <Search onChange={this.handleSearch} authLogin={this.authLogin}/>
+          </ToolbarGroup>
 
-        style={{background: 'rgb(197, 186, 155)'}}
-        >
-        </AppBar>
-        <br/>
-        <Search onChange={this.handleSearch}/>
-        <br/>
+          <ToolbarGroup>
+            <RaisedButton label="Login" onClick={this.loginToggle}/>
+            <RaisedButton label="Register" onClick={this.registerToggle}/>
+          </ToolbarGroup>
+
+          <ToolbarGroup lastChild={true}>
+            <IconButton onClick={this.touchTap}><NavigationMenu/></IconButton>
+          </ToolbarGroup>
+        </Toolbar>
+
         <ListingsContainer listings={this.state.listings} />
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
           <AppBar title="Sit-n-Paws Profile" onLeftIconButtonTouchTap={this.touchTap} style={{background: 'rgb(197, 186, 155)'}}/>
@@ -112,6 +165,7 @@ export default class Main extends React.Component {
           <RaisedButton onClick={this.postDog} label="Add dog profile" labelColor="white" style={this.styles} backgroundColor="rgb(171, 94, 94)"/>
           {this.state.renderProfile ? <ProfileUpdate/> : null}
         </Drawer>
+
         <Dialog
           modal={false}
           title="Host A Dog Today!"
@@ -121,6 +175,7 @@ export default class Main extends React.Component {
         >
           <PostListing />
         </Dialog>
+
         <Dialog
           modal={false}
           open={this.state.openPostDog}
@@ -129,6 +184,33 @@ export default class Main extends React.Component {
         >
           <PostDog />
         </Dialog>
+
+        <Dialog
+          modal={false}
+          open={this.state.openLogin}
+          onRequestClose={this.loginToggle}
+          autoScrollBodyContent={true}
+        >
+          <LoginForm />
+        </Dialog>
+
+        <Dialog
+          modal={false}
+          open={this.state.openRegister}
+          onRequestClose={this.registerToggle}
+          autoScrollBodyContent={true}
+        >
+          <RegisterForm />
+        </Dialog>
+
+        <Dialog
+          title="Users Only!"
+          actions={actions}
+          modal={false}
+          open={this.state.openLoginMessage}
+        >
+        </Dialog>
+
       </div>
       </MuiThemeProvider>
     )

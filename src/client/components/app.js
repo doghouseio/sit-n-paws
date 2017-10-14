@@ -30,18 +30,19 @@ export default class App extends React.Component {
   // if checkAuth is true, then allow access to /main
   render() {
     return(
-    <BrowserRouter history={browserHistory}>
-      <Switch>
-        <Route exact path='/' component={Home}/>
-        <Route path='/login' render={(props) => (
-          <Login {...props}
-          handleLogin={this.authLogin}
-          />
-          )}/>
-        <PrivateRoute path='/main' checkAuth={this.authLogin} component={Main}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </BrowserRouter>
+      <Main />
     )
   }
 }
+    // <BrowserRouter history={browserHistory}>
+    //   <Switch>
+    //     <Route exact path='/' component={Main}/>
+    //     <Route path='/login' render={(props) => (
+    //       <Login {...props}
+    //       handleLogin={this.authLogin}
+    //       />
+    //       )}/>
+    //     <PrivateRoute path='/main' checkAuth={this.authLogin} component={Main}/>
+    //     <Route component={NotFound}/>
+    //   </Switch>
+    // </BrowserRouter>

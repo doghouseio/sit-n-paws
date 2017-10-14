@@ -35,9 +35,11 @@ export default class ShowProfile extends React.Component {
 
   }
   componentWillMount() {
-    var token = localStorage.jwt;
-    var decoded = jwt.decode(token);
-    this.setState({Name: decoded.username});
+    if (localStorage.jwt) {
+      var token = localStorage.jwt;
+      var decoded = jwt.decode(token);
+      this.setState({Name: decoded.username});
+    }
   }
 
   render() {
