@@ -32,7 +32,7 @@ export default class ProfileView extends React.Component {
       date: null, //TODO, import date handling functionality
       open: false,
       dogs: props.dogs,
-      // dogsPictures: null
+      dogsPictures: props.dogsPictures
     }
     //handle 'contact me'
 
@@ -98,6 +98,7 @@ export default class ProfileView extends React.Component {
 
       function RenderDogs(props) {
         const dogs = props.dogs;
+        const pics = props.pics;
         if (dogs === null) {
           return (<div>This user does not own dogs</div>)
         }
@@ -108,7 +109,8 @@ export default class ProfileView extends React.Component {
             Age: {dog.age} <br />
             Bio: {dog.bio} <br />
             Breed: {dog.dogBreed} <br />
-          </li>
+            <img src={pics[index]} style={{height: "auto"}} alt="Dog Picture" width="240" height="180" />
+            </li>
         )
         return (
           <ul>{dogListItems}</ul>
@@ -142,8 +144,8 @@ export default class ProfileView extends React.Component {
               {`Description: ${this.state.homeAttributes}`}
             </div>
             <div className="dogs-info">
-              <h2>Dog's living here</h2>
-              <RenderDogs dogs={this.state.dogs} />
+              <h2>Dog(s) living here</h2>
+              <RenderDogs pics={this.state.dogsPictures} dogs={this.state.dogs} />
 
             </div>
             <div>

@@ -210,7 +210,6 @@ app.post('/dog', dogUpload, (req, res, next) => {
 
 //returns User's dogs
 app.get('/dog', (req, res) => {
-  console.log(req,'req')
   var email = req.query.email;
   if (!email) {
     res.status(404).send('No email provided');
@@ -229,6 +228,26 @@ app.get('/dog', (req, res) => {
   })
 })
 
+//returns User's dog pictures
+app.get('/dogpics', (req, res) => {
+  var email = req.query.email;
+  console.log('email',email)
+  if (!email) {
+    res.status(404).send('No email provided');
+  }
+  User.find({email: email})//.select('dogsPictures')
+  .exec((err, pics) => {
+    console.log('piiics',pics)
+    if (err) {
+      console.log(err);
+    } else {
+      if (pics.length) {
+        console.log('picUrls',pics)
+        res.status(200).send(pics[0].dogsPictures);
+      } else res.status(200).send()
+      }
+  })
+})
 
 //Check post listing for uploaded files and stores in req.files
 let listingsUpload = upload.fields([{
