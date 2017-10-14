@@ -4,7 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import submitListing from '../utils/submitListing.js';
 import jwt from 'jsonwebtoken';
 import masterUrl from '../utils/masterUrl.js';
-
+import axios from 'axios';
+import TextField from 'material-ui/TextField';
 export default class PostListing extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +23,9 @@ export default class PostListing extends React.Component {
       hostPictures: null,
       homePictures: null,
       cost: '',
+      street: '',
+      city: '',
+      state: '',
       submitted: false,
       error: null,
       message: 'Thank you, your listing has been successfully submitted!'
@@ -58,10 +62,9 @@ export default class PostListing extends React.Component {
       formData.append("yard", this.state.yard);
       formData.append("pets", this.state.pets);
       formData.append("children", this.state.children);
-
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
+      formData.append("street", this.state.street);
+      formData.append("city", this.state.city);
+      formData.append("state", this.state.state);
 
       let url = '/listings';
 
@@ -97,44 +100,35 @@ export default class PostListing extends React.Component {
             <div className="postListing">
               <div className="postListing-label">
 
-                <label>Name:</label><br />
-                <input type="text" name="name" value={this.state.name} /><br />
+                <TextField floatingLabelText="Name" value={this.state.name} name="name"/>
 
-                {/* <label>Email:</label><br />
-                <input type="text" name="email" value={this.state.email} /><br />
-                get email from user profile
-                */}
+                <TextField floatingLabelText="Zip Code" value={this.state.zipcode} name="zipcode"/>
 
-                <label>Zip Code:</label><br />
-                <input type="number" name="zipcode" value={this.state.zipcode} /><br />
+                <TextField floatingLabelText="Street" value={this.state.street} name="street"/>
 
-                <label>Dog Size Preference</label><br />
-                <input type="text" name="dogSizePreference" value={this.state.dogSizePreference} /><br />
+                <TextField floatingLabelText="City" value={this.state.city} name="city"/>
 
-                <label>Dog Breed Preference:</label><br />
-                <input type="text" name="dogBreedPreference" value={this.state.dogBreedPreference} /><br />
+                <TextField floatingLabelText="State" value={this.state.state} name="state"/>
 
-                <label>Dog Activity Preferences:</label><br />
-                <input type="text" name="dogActivityPreference" value={this.state.dogActivityPreference} /><br />
+                <TextField floatingLabelText="Preferred Dog Size" value={this.state.dogSizePreference} name="dogSizePreference"/>
 
-                <label>Yard Size: </label><br />
-                <input type="text" name="yard" value={this.state.yard} /><br />
+                <TextField floatingLabelText="Preferred Dog Breed" value={this.state.dogBreedPreference} name="dogBreedPreference"/>
+
+                <TextField floatingLabelText="Preferred Dog Activity" value={this.state.dogActivityPreference} name="dogActivityPreference"/>
+
 
               </div>
               <div className="postListing-label">
 
+                <TextField floatingLabelText="Yard Size" value={this.state.yard} name="yard"/>
 
-                <label>Pets: </label><br />
-                <input type="text" name="pets" value={this.state.pets} /><br />
+                <TextField floatingLabelText="Pets" value={this.state.pets} name="pets"/>
 
-                <label>Children: </label><br />
-                <input type="text" name="children" value={this.state.children} /><br />
+                <TextField floatingLabelText="Children" value={this.state.children} name="children"/>
 
-                <label>Cost Per Night: </label><br />
-                <input type="text" name="cost" value={this.state.cost} /><br />
+                <TextField floatingLabelText="Cost Per Night" value={this.state.cost} name="cost"/>
 
-                <label>Description:</label><br />
-                <textarea type="text" name="homeAttributes" value={this.state.homeAttributes} /><br />
+                <TextField floatingLabelText="Description" multiLine={true} rows={2} value={this.state.homeAttributes} name="homeAttributes"/>
 
                 <label htmlFor="hostPictures" className="postListing-fileLabel">{this.state.hostPictures ? this.state.hostPictures.name : `Choose a Picture of you`}</label><br />
                 <input type="file" name="hostPictures" id="hostPictures" className="postListing-file" /><br />
