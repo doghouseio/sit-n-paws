@@ -4,3 +4,11 @@ const cloudConfig = {
   api_secret: '3BIDYuhvrLG6WDzleVkISTyAq2c'
 };
 module.exports = cloudConfig;
+
+
+// const cloudConfig = {
+//   cloud_name: process.env.CLOUDINARY_NAME,
+//   api_key: process.env.CLOUDINARY_API,
+//   api_secret: process.env.CLOUDINARY_SECRET
+// };
+// module.exports = cloudConfig;
