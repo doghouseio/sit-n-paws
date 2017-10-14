@@ -98,7 +98,11 @@ export default class ProfileView extends React.Component {
 
       function RenderDogs(props) {
         const dogs = props.dogs;
-        const dogListItems = dogs.map((dog, index) =>
+        if (dogs === null) {
+          return (<div>This user does not own dogs</div>)
+        }
+        if (dogs.length) {
+          const dogListItems = dogs.map((dog, index) =>
           <li key={index}>
             Name: {dog.name} <br />
             Age: {dog.age} <br />
@@ -109,6 +113,9 @@ export default class ProfileView extends React.Component {
         return (
           <ul>{dogListItems}</ul>
         )
+        } else return (<div>This user does not own dogs</div>)
+
+
       }
       return (
         <div>
@@ -135,11 +142,13 @@ export default class ProfileView extends React.Component {
               {`Description: ${this.state.homeAttributes}`}
             </div>
             <div className="dogs-info">
-              <h2>Dogs Living here</h2>
+              <h2>Dog's living here</h2>
               <RenderDogs dogs={this.state.dogs} />
 
             </div>
-            <MyMap position={this.state.position}/>
+            <div>
+              <MyMap position={this.state.position}/>
+            </div>
           </CardText>
           <CardActions>
             <FlatButton label="Contact Me" onClick={this.handleOpen}/>

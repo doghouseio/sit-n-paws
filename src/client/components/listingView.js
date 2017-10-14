@@ -72,7 +72,7 @@ export default class ListingView extends React.Component {
       });
     }
     let outer = this;
-    this.getDogData('www', function(dogs) {
+    this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
       console.log('line78',outer.state.dogs)
     });

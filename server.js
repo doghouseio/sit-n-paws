@@ -218,8 +218,11 @@ app.get('/dog', (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log('dogs',dogs[0].dogs)
-      res.status(200).send(dogs[0].dogs);
+      if (dogs.length) {
+        console.log('dogs',dogs[0].dogs)
+        res.status(200).send(dogs[0].dogs);
+      } else res.status(200).send()
+
       }
   })
 })
