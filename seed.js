@@ -25,11 +25,63 @@ const mockCompleteUser = [
   {
     username: 'mary444',
     password: '1234',
-    email: 'mary@test.com',
+    email: 'hi1@gmail.com',
     name: 'Mary Tester',
     phone: '561-123-5155',
-    address: '14 Main Street'
+    address: '14 Main Street',
+    dogsPictures: ['https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/Natural-Dog-Law-2-To-dogs%2C-energy-is-everything.jpg'],
+    dogs:  [{
+        name: 'Borko',
+        dogSize: 'Large',
+        dogBreed: 'Mutt',
+        dogActivityReq: 40,
+        bio: 'Very energetic and well behaved',
+        age: 2,
+      }]
+  },
+  {
+    username: 'chrispfaff10',
+    password: '1234',
+    email: 'chrispfaff10@gmail.com',
+    name: 'Chris Tester',
+    phone: '561-123-5155',
+    address: '13 Main Street',
+    dogsPictures: ['https://i.pinimg.com/736x/63/0f/0e/630f0ef3f6f3126ca11f19f4a9b85243--dachshund-puppies-weenie-dogs.jpg'],
+    dogs:  [{
+        name: 'Duke',
+        dogSize: 'Smol',
+        dogBreed: 'Weiner dog',
+        dogActivityReq: '5',
+        bio: 'Small pup, needs to be potty trained',
+        age: 1,
+      }]
+  },
+  {
+    username: 'YoungNeil',
+    password: '1234',
+    email: 'nlarson94@gmail.com',
+    name: 'Neil Tester',
+    phone: '561-123-5155',
+    address: '23 Main Street',
+    dogsPictures:['https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/How%20to%20calm%20a%20hyper%20dog.jpg','https://d2wq73xazpk036.cloudfront.net/media/27FB7F0C-9885-42A6-9E0C19C35242B5AC/2F80877A-747B-4CEA-B1AE3DA490BA85C5/thul-42f6252d-3299-512f-990d-351d481f122b.jpg'] ,
+    dogs: [{
+        name: 'Tucker',
+        dogSize: 'Large',
+        dogBreed: 'Australian shep',
+        dogActivityReq: '50',
+        bio: 'Very fun well-behaved, loves to play :)',
+        age: 5,
+      },
+      {
+        name: 'Dale',
+        dogSize: 'Medium',
+        dogBreed: 'Grey Hound',
+        dogActivityReq: '55',
+        bio: 'Very fast, good with kids. Do not let her run away D:',
+        age: 1,
+      }]
   }
+
 ];
 
 // function to clean listings from database and seed with above listings and user
@@ -44,7 +96,7 @@ const seedListingDB = () => {
         if(err) {
           console.log(err);
         }
-        let reformatUser = JSON.stringify(mockCompleteUser[0]);
+        let reformatUser = JSON.stringify(mockCompleteUser[2]);
         let newUser = new User(JSON.parse(reformatUser));
         // add user mary444 to database
         newUser.save((err) => {
