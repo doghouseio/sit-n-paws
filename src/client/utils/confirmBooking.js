@@ -1,17 +1,28 @@
 export default function confirmBooking(url, body, callback) {
 
-  // used in postDog.js
   var options = {
-    method: 'PUT',
-    body: body
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
   };
-
+  console.log('options',options)
   fetch(url, options)
-    .then((res) => res.json())
-    .then((data) => {
-      callback(data);
+    .then((res) => {
+      console.log(res.status)
+      if (res.ok) {
+        callback('Yay');
+      }
+      else {
+        throw new Error
+      }
     })
+    // .then((data) => {
+    //   callback(data);
+    // })
     .catch((errors) => {
-      console.log('Add dog error: ', errors);
+      console.log('Put error: ', errors);
     })
 }

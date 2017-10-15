@@ -474,12 +474,14 @@ app.get('/bookings/guest', (req, res) => {
     })
 })
 
-app.put('/bookings', (req, res) => {
-  Booking.findOneAndUpdate({_id: req.body._id}, {confirmed: req.body.confirmed}, function(err) {
+app.post('/bookings', (req, res) => {
+  console.log('REQ BODY',req.body);
+  let confirmed = {confirmed:req.body.confirmed}
+  Booking.findOneAndUpdate({_id: req.body.id}, confirmed, function(err, booking) {
     if (err) {
       res.status(404).send(err);
     } else {
-      res.status(200).send('Booking confirmation updated!')
+      res.status(200).send()
     }
   })
 })

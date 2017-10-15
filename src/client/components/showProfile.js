@@ -53,17 +53,12 @@ export default class ShowProfile extends React.Component {
       let confirmed = e.target.getAttribute('data-confirmed')
       let body = {
         id: id,
-        confirmed: !confirmed
+        confirmed: true
       }
+      console.log('body58', body)
       let url = '/bookings';
       confirmBooking(url, body, (res) => {
-        if (res.success === true) {
-          console.log('Dog submitted!');
-          this.setState({message: res.message});
-          this.setState({submitted: true});
-        } else {
-          console.log('Error: ', res.error);
-        }
+        console.log('REs',res)
       });
     }
   }
@@ -113,8 +108,7 @@ export default class ShowProfile extends React.Component {
             <li key={index}>
               <div>Guest: {listing.guestEmail}</div>
               <div>Date: {listing.date.substring(1, 11)}</div>
-              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : 'No'}</b></div>
-
+              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : <span>No<button data-confirmed={listing.confirmed} data-id={listing._id} label="Confirm Booking" onClick={e => this.handleConfirm(e)} >Confirm</button></span>}</b></div>
             </li>
           )
           return (<ul>{hostListItems}</ul>)
@@ -128,8 +122,7 @@ export default class ShowProfile extends React.Component {
             <li key={index}>
               <div>Host: {listing.hostEmail}</div>
               <div>Date: {listing.date.substring(1, 11)}</div>
-              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : <span>No<button data-confirmed={listing.confirmed} data-id={listing._id} label="Confirm Booking" onClick={e => this.handleConfirm(e)} >Confirm</button></span>}</b></div>
-
+              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : 'No'}</b></div>
             </li>
           )
           return (<ul>{guestListItems}</ul>)
@@ -140,12 +133,9 @@ export default class ShowProfile extends React.Component {
 
     return (
       <div className='profileBox'>
-<<<<<<< HEAD
         <h1>{this.state.name}</h1>
         <h3>Email: {this.props.user.email} </h3>
         <h3>Address: {this.props.user.address} </h3>
-=======
->>>>>>> 47798eb16fcf525e9a101707d09b7700cf864024
         <Avatar style={this.styles}
         backgroundColor='rgba(0,0,0,0)'
         alt="User Picture"
