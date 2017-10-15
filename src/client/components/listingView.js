@@ -66,7 +66,6 @@ export default class ListingView extends React.Component {
         if (err) {
           console.log(err);
         } else {
-          // console.log('res68',res.body)
           callback(res.body)
         }
 
@@ -89,11 +88,12 @@ export default class ListingView extends React.Component {
     // this.getDogData(outer.state.hostEmail, function(dogs) {
     this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
-      // console.log('line91',outer.state.dogs)
     });
     this.getDogPictureData(outer.state.hostEmail, function(pics) {
       outer.setState({dogsPictures:pics});
-      // console.log('line95',outer.state.dogsPictures)
+    });
+    this.getDogPictureData(outer.state.hostEmail, function(pics) {
+      outer.setState({dogsPictures:pics});
     });
 
     this.handleCardClick = (e) => {

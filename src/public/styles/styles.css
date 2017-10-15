@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'gooddog_coolregular';
+    src: url('gooddc__-webfont.woff2') format('woff2'),
+         url('gooddc__-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body, html, #app {
   height: 100%;
   font-family: "Lato", sans-serif;
@@ -8,7 +16,7 @@ body, html, #app {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
   grid-gap: 15px;
-  padding: 0px 15px;
+  padding: 20px 15px;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -234,3 +242,9 @@ input {
 }
 
 #mapid { height: 180px; }
+
+.toolbar-title {
+  font-family: 'gooddog_coolregular' !important;
+  color: white !important;
+  font-size: 45px !important;
+}
