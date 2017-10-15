@@ -13,11 +13,11 @@ import request from 'superagent';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Pets from 'material-ui/svg-icons/action/pets';
-import ActionHome from 'material-ui/svg-icons/action/home';
+import RoomService from 'material-ui/svg-icons/places/room-service';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
@@ -28,6 +28,7 @@ export default class Main extends React.Component {
     super(props);
 
     this.state = {
+      Name: '',
       listings: [],
       query: '',
       openDrawer: false,
@@ -182,6 +183,7 @@ export default class Main extends React.Component {
             })
           }
         })
+    this.setState({Name: decoded.username});
   }
 
   // Renders AppBar, Search, Drawer, and PostListing
@@ -210,23 +212,13 @@ export default class Main extends React.Component {
         <Toolbar style={{background: 'rgb(197, 186, 155)'}}>
           <ToolbarGroup firstChild={true}>
             <IconButton tooltip="New dog!" tooltipPosition="bottom-right" onClick={this.postDog}><Pets/></IconButton>
-            <IconButton tooltip="New host listing!" tooltipPosition="bottom-right" onClick={this.postListing}><ActionHome/></IconButton>
+            <IconButton tooltip="New host listing!" tooltipPosition="bottom-right" onClick={this.postListing}><RoomService/></IconButton>
           </ToolbarGroup>
 
           <ToolbarGroup>
-            <Search onChange={this.handleSearch} authLogin={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
+            <ToolbarTitle text="Sit-n-Paws" className="toolbar-title"/>
           </ToolbarGroup>
 
-          {!this.authLogin() ?
-            <ToolbarGroup>
-              <RaisedButton label="Login" onClick={this.loginToggle}/>
-              <RaisedButton label="Register" onClick={this.registerToggle}/>
-            </ToolbarGroup>
-            :
-            <ToolbarGroup>
-              <RaisedButton label="Log Out" onClick={this.logoutOnClick}/>
-            </ToolbarGroup>
-          }
 
 
           <ToolbarGroup lastChild={true}>
@@ -234,9 +226,30 @@ export default class Main extends React.Component {
           </ToolbarGroup>
         </Toolbar>
 
+        <Toolbar>
+          <ToolbarGroup>
+            <Search onChange={this.handleSearch} authLogin={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
+          </ToolbarGroup>
+          {!this.authLogin() ?
+            <ToolbarGroup lastChild={true}>
+              <RaisedButton label="Login" onClick={this.loginToggle}/>
+              <RaisedButton label="Register" onClick={this.registerToggle}/>
+            </ToolbarGroup>
+            :
+            <ToolbarGroup lastChild={true}>
+              <RaisedButton label="Log Out" onClick={this.logoutOnClick}/>
+            </ToolbarGroup>
+          }
+        </Toolbar>
+
         <ListingsContainer listings={this.state.listings} checkAuth={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
-          <AppBar title="Sit-n-Paws Profile" onLeftIconButtonTouchTap={this.touchTap} style={{background: 'rgb(197, 186, 155)'}}/>
+          <AppBar
+          title={this.state.Name}
+          titleStyle={{fontFamily: "gooddog_coolregular", fontSize: "40px"}}
+          onLeftIconButtonTouchTap={this.touchTap}
+          style={{background: 'rgb(197, 186, 155)'}}
+          />
           <ShowProfile guestBookings={this.state.guestBookings} hostBookings={this.state.hostBookings} user={this.state.user}/>
           <RaisedButton onClick={this.profileOnClick} label="Edit Profile" labelColor="white" style={this.styles} backgroundColor="rgb(197, 186, 155)" />
           {this.state.renderProfile ? <ProfileUpdate/> : null}

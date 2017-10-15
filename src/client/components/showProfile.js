@@ -140,9 +140,12 @@ export default class ShowProfile extends React.Component {
 
     return (
       <div className='profileBox'>
+<<<<<<< HEAD
         <h1>{this.state.name}</h1>
         <h3>Email: {this.props.user.email} </h3>
         <h3>Address: {this.props.user.address} </h3>
+=======
+>>>>>>> 47798eb16fcf525e9a101707d09b7700cf864024
         <Avatar style={this.styles}
         backgroundColor='rgba(0,0,0,0)'
         alt="User Picture"
