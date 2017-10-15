@@ -176,7 +176,7 @@ export default class Main extends React.Component {
           if (err) {
             console.error(err);
           } else {
-          //  console.log("USER:", res.body);
+           console.log("USER:", res.body[0]);
             this.setState({
               user: res.body[0]
             })
