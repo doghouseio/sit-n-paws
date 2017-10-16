@@ -98,7 +98,7 @@ npm test
 
 ### Roadmap
 
-View the project roadmap [here](https://github.com/TopHatHR/sit-n-paws/issues)
+View the project roadmap [here](https://github.com/doghouseio/sit-n-paws/issues)
 
 ## Contributing
 
