@@ -15,7 +15,7 @@ export default class PostDog extends React.Component {
       dogBreed: '',
       dogActivityReq: '',
       bio: '',
-      dogPictures: null,
+      dogsPictures: null,
       age: 0,
       submitted: false,
       error: null,
@@ -46,7 +46,7 @@ export default class PostDog extends React.Component {
       formData.append("dogBreed", this.state.dogBreed);
       formData.append("dogActivityReq", this.state.dogActivityReq);
       formData.append("bio", this.state.bio);
-      formData.append("dogPictures", this.state.dogPicture);
+      formData.append("dogsPictures", this.state.dogsPictures);
       formData.append("age", this.state.age);
       formData.append("email", this.state.userEmail);
 
@@ -100,8 +100,8 @@ export default class PostDog extends React.Component {
 
                 <TextField floatingLabelText="Dog's age" value={this.state.age} name="age"/>
 
-                <label htmlFor="dogPicture" className="postListing-fileLabel">{this.state.dogPicture ? this.state.dogPicture.name : `Choose a Picture of your dog`}</label><br />
-                <input type="file" name="dogPicture" id="dogPicture" className="postListing-file" /><br />
+                <label htmlFor="dogsPictures" className="postListing-fileLabel">{this.state.dogsPictures ? this.state.dogsPictures.name : `Choose a Picture of your dog`}</label><br />
+                <input type="file" name="dogsPictures" id="dogsPictures" className="postListing-file" /><br />
                 </div>
               </div>
             <div>

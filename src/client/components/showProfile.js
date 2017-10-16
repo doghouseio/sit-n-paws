@@ -147,7 +147,7 @@ export default class ShowProfile extends React.Component {
         <h4>You have the following dates booked with other hosts</h4>
         <RenderGuestings guest={this.props.guestBookings} />
         <h2>Your dogs!</h2>
-        <RenderDogs pics={this.props.dogsPictures} dogs={this.props.dogs} />
+        <RenderDogs pics={this.props.user.dogsPictures} dogs={this.props.user.dogs} />
         <Dialog
           modal={false}
           open={this.state.openPostDog}
