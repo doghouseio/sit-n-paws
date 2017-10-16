@@ -85,7 +85,6 @@ export default class ListingView extends React.Component {
 
 
     let outer = this;
-    // this.getDogData(outer.state.hostEmail, function(dogs) {
     this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
     });
@@ -117,23 +116,6 @@ export default class ListingView extends React.Component {
   }
 
   render() {
-    // These are the action buttons for the Dialog
-    // const actions = [
-    //   <FlatButton
-    //   label="Cancel"
-    //   secondary={true}
-    //   onClick={this.handleClose}
-    //   />,
-    //   <FlatButton
-    //     label="Send Message"
-    //     primary={true}
-    //     keyboardFocused={true}
-    //     onClick={this.handleSendEmail}
-    //   />
-    // ];
-
-    // Refer to material-ui cards for more info on changing card styles
-    // Each props.listing is passed from Main to listingsContainer to listingView
     return (
       <div>
         <Card onClick={this.handleCardClick}>
@@ -176,5 +158,3 @@ export default class ListingView extends React.Component {
     )
   }
 }
-// ListingView.propTypes = {listing: PropTypes.object.isRequired};
-// dogs={this.state.dogs}

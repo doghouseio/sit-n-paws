@@ -17,6 +17,7 @@ export default class App extends React.Component {
     // Returns true if found, false if not.
     // Can be decoded to extract username and expiration date for stricter login validation
     // Token becomes null upon logout
+    // this function will be useful if you end up using react router
     this.authLogin = () => {
       let token = localStorage.getItem('jwt');
       if (token !== "undefined" && token !== null && token !== undefined) {
@@ -27,22 +28,9 @@ export default class App extends React.Component {
     }
   }
 
-  // if checkAuth is true, then allow access to /main
   render() {
     return(
       <Main />
     )
   }
 }
-    // <BrowserRouter history={browserHistory}>
-    //   <Switch>
-    //     <Route exact path='/' component={Main}/>
-    //     <Route path='/login' render={(props) => (
-    //       <Login {...props}
-    //       handleLogin={this.authLogin}
-    //       />
-    //       )}/>
-    //     <PrivateRoute path='/main' checkAuth={this.authLogin} component={Main}/>
-    //     <Route component={NotFound}/>
-    //   </Switch>
-    // </BrowserRouter>
