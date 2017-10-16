@@ -49,6 +49,7 @@ export default class ShowProfile extends React.Component {
       this.setState({openPostDog: !this.state.openPostDog});
     }
     this.handleConfirm = (e) => {
+      e.preventDefault()
       let id = e.target.getAttribute('data-id');
       let confirmed = e.target.getAttribute('data-confirmed')
       let body = {
@@ -61,6 +62,7 @@ export default class ShowProfile extends React.Component {
         console.log('REs',res)
       });
     }
+
   }
 
 
@@ -102,13 +104,14 @@ export default class ShowProfile extends React.Component {
 
       }
       function RenderHostings(props) {
+
         const host = props.host
         if (host.length) {
           const hostListItems = host.map((listing, index)=>
             <li key={index}>
               <div>Guest: {listing.guestEmail}</div>
               <div>Date: {listing.date.substring(1, 11)}</div>
-              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : <span>No<button data-confirmed={listing.confirmed} data-id={listing._id} label="Confirm Booking" onClick={e => this.handleConfirm(e)} >Confirm</button></span>}</b></div>
+              <div>Confirmed?: <b>{listing.confirmed ? 'Yes' : <span>No<button data-confirmed={listing.confirmed} data-id={listing._id} label="Confirm Booking" onClick={e=>props.confirm(e)} >Confirm</button></span>}</b></div>
             </li>
           )
           return (<ul>{hostListItems}</ul>)
@@ -143,7 +146,7 @@ export default class ShowProfile extends React.Component {
         />
         <h2>Important dates</h2>
         <h4>You are hosting the following bookings</h4>
-        <RenderHostings host={this.props.hostBookings} />
+        <RenderHostings host={this.props.hostBookings} confirm={this.handleConfirm.bind(this)}/>
         <h4>You have the following dates booked with other hosts</h4>
         <RenderGuestings guest={this.props.guestBookings} />
         <h2>Your dogs!</h2>
