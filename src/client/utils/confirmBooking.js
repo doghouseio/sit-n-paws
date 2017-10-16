@@ -8,20 +8,16 @@ export default function confirmBooking(url, body, callback) {
       'Content-Type': 'application/json'
     }
   };
-  console.log('options',options)
+
   fetch(url, options)
     .then((res) => {
-      console.log(res.status)
       if (res.ok) {
-        callback('Yay');
+        callback('ok');
       }
       else {
         throw new Error
       }
     })
-    // .then((data) => {
-    //   callback(data);
-    // })
     .catch((errors) => {
       console.log('Put error: ', errors);
     })

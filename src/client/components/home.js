@@ -1,3 +1,4 @@
+// This component is no longer in use, but could be useful if you choose to make a multi-page app
 import React from 'react';
 import { Link } from 'react-router-dom';
 

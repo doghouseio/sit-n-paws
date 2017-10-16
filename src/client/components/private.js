@@ -1,3 +1,4 @@
+// this component is no longer in use but may be helpful if you implement react router
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 

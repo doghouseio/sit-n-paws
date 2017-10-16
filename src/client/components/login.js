@@ -1,3 +1,4 @@
+//this component is no longer used, but could be useful if you choose to make a multi-page app
 import React from 'react';
 import PropTypes from 'prop-types';
 import jwt from 'jsonwebtoken';

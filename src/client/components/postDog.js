@@ -50,9 +50,10 @@ export default class PostDog extends React.Component {
       formData.append("age", this.state.age);
       formData.append("email", this.state.userEmail);
 
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-      }
+      // you may wish to use this log if you alter form data
+      // for (var pair of formData.entries()) {
+      //   console.log(pair[0] + ', ' + pair[1]);
+      // }
 
       let url = '/dog';
 

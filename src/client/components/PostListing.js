@@ -70,7 +70,7 @@ export default class PostListing extends React.Component {
 
       submitListing(url, formData, (res) => {
         if (res.success === true) {
-          console.log('Listing submitted!');
+          //console.log('Listing submitted!');
           this.setState({message: res.message});
           this.setState({submitted: true});
         } else {

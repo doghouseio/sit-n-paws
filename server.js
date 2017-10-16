@@ -113,7 +113,6 @@ app.post('/signup', (req, res) => {
         })
       }
     })
-    console.log(password);
 })
 
 //handles updating profiles in db
@@ -151,9 +150,7 @@ let dogUpload = upload.fields([{
 }]);
 
 app.post('/dog', dogUpload, (req, res, next) => {
-  var email = req.body.email;
-  console.log('Request body', req.body)
-
+  var email = req.body.email
   var dog = {
     name: req.body.name,
     dogSize: req.body.dogSize,
@@ -170,7 +167,6 @@ app.post('/dog', dogUpload, (req, res, next) => {
       }
     }
     , function(err, dogs) {
-      console.log('response',dogs)
       if(err) {
         res.status(404).send(err);
         next();
@@ -180,7 +176,6 @@ app.post('/dog', dogUpload, (req, res, next) => {
       }
   })
 }, (req, res) => {
-  console.log('line 182',req.body, 'files',req.files)
   // Sends files to the Cloudinary servers and updates entries in the database
   if (req.files.dogsPictures) {
     console.log('Send to cloudinary!', req.files.dogsPictures[0].path);
@@ -196,7 +191,6 @@ app.post('/dog', dogUpload, (req, res, next) => {
           }
         }
         , function(err, dogs) {
-          console.log('response',dogs)
           if(err) {
             res.status(404).send(err);
           } else {
@@ -219,7 +213,6 @@ app.get('/dog', (req, res) => {
       console.log(err);
     } else {
       if (dogs.length) {
-        console.log('dogs',dogs[0].dogs)
         res.status(200).send(dogs[0].dogs);
       } else res.status(200).send()
 
@@ -230,18 +223,15 @@ app.get('/dog', (req, res) => {
 //returns User's dog pictures
 app.get('/dogpics', (req, res) => {
   var email = req.query.email;
-  console.log('email',email)
   if (!email) {
     res.status(404).send('No email provided');
   }
   User.find({email: email})//.select('dogsPictures')
   .exec((err, pics) => {
-    console.log('piiics',pics)
     if (err) {
       console.log(err);
     } else {
       if (pics.length) {
-        console.log('picUrls',pics)
         res.status(200).send(pics[0].dogsPictures);
       } else res.status(200).send()
       }
@@ -285,13 +275,9 @@ app.post('/listings', listingsUpload, (req, res, next) => {
   var state = req.body.state;
   var mapUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${street},${city},${state}&key=${geoKey}`
   var location = [];
-  //var mapUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=233+Harvest+Drive,+Vacaville,+CA&key=' + geoKey;
   axios.get(mapUrl)
   .then(function(response) {
-    // console.log('RESPONSE')
-    // console.log(JSON.stringify(response.data))
     location = [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
-    console.log(location);
   })
   .catch(function(error) {
     console.log(error);
@@ -343,12 +329,12 @@ app.post('/listings', listingsUpload, (req, res, next) => {
       if(err) {
         console.log('Cloudinary error: ', err);
       }
-      console.log('Host Picture url: ', result.url)
+      // console.log('Host Picture url: ', result.url) you may wish to use this if you alter file uploading
       Listing.findOneAndUpdate({name: req.body.name}, {hostPictures: result.url}, (err, found) => {
         if (err) {
           console.log(err);
         }
-        console.log('Updated Host Pictures: ', found);
+        // console.log('Updated Host Pictures: ', found); you may wish to use this if you alter file uploading
       });
     });
   }
@@ -358,12 +344,12 @@ app.post('/listings', listingsUpload, (req, res, next) => {
       if (err) {
         console.log('Cloudinary error: ', err);
       }
-      console.log('Home Picture url: ', result.url);
+      // console.log('Home Picture url: ', result.url); you may wish to use this if you alter file uploading
       Listing.findOneAndUpdate({name: req.body.name}, {homePictures: result.url}, (err, found) => {
         if (err) {
           console.log(err);
         }
-        console.log('Updated Home Pictures: ', found)
+        // console.log('Updated Home Pictures: ', found) you may wish to use this if you alter file uploading
       });
     });
   }
@@ -394,36 +380,6 @@ app.get('/listings/:zipcode', (req, res) => {
       })
 })
 
-// {
-//     hostEmail: { type: String, required: true },
-//     guestEmail: { type: String, required: true },
-//     date: { type: String, required: true },
-//     confirmed: {type: Boolean, required: true}
-// }
-
-//Post a new booking
-///////THIS WAS MOVED TO 'contacthost' endpoint
-// app.post('/bookings', (req, res) => {
-//   //construct address out of request body
-//   var ownerEmail = req.body.ownerEmail;
-//   var hostEmail = req.body.hostEmail;
-//   var date = req.body.date;
-
-//   var newBooking = new Booking({
-//     guestEmail: ownerEmail,
-//     hostEmail: hostEmail,
-//     date: date,
-//     confirmed: false
-//   });
-
-//   newBooking.save((err, booking) => {
-//     if (err) {
-//       res.status(404).send(err)
-//     } else {
-//       res.status(200).send(booking)
-//     }
-//   });
-// });
 
 //Get all bookings that the user is hosting
 app.get('/bookings/host', (req, res) => {
@@ -438,11 +394,9 @@ app.get('/bookings/host', (req, res) => {
     })
 })
 
-//Get all bookings that the user is patronizing
+// Get all bookings that the user is patronizing
 app.get('/bookings/guest', (req, res) => {
   let email = req.query.email
-  console.log(req.query)
-  console.log(email)
   Booking.find({guestEmail: email})
     .exec((err, booking) => {
       if (err) {
@@ -453,8 +407,8 @@ app.get('/bookings/guest', (req, res) => {
     })
 })
 
+// Update a booking
 app.post('/bookings', (req, res) => {
-  console.log('REQ BODY',req.body);
   let confirmed = {confirmed:req.body.confirmed}
   Booking.findOneAndUpdate({_id: req.body.id}, confirmed, function(err, booking) {
     if (err) {
@@ -469,7 +423,6 @@ app.post('/bookings', (req, res) => {
 
 //handles requests for contacting host, sends email to host
 app.post('/contacthost', (req, res) => {
-  console.log('reqq', req.body)
   var ownerEmail = req.body.ownerEmail;
   var hostEmail = req.body.hostEmail;
   var date = req.body.date;
@@ -499,7 +452,7 @@ app.post('/contacthost', (req, res) => {
       console.log(error);
       res.json({hi: 'error here'})
     } else {
-      console.log('Email sent: ' + response.response);
+      // console.log('Email sent: ' + response.response);
       res.json({hi: response.response});
 
       newBooking.save((err, booking) => {
@@ -518,13 +471,6 @@ app.get('*', (req, res) => {
   res.sendFile(__dirname + '/src/public/index.html');
 })
 
-// app.set('port', (process.env.PORT || 3000));
-// app.get('/', function() {
-//   response.send('App is running');
-// }).listen(app.get('port', function() {
-//   console.log('App is running, server is listening on port', app.get('port'));
-// })
-// })
 app.listen(process.env.PORT || 3000, () => {
   console.log('Listening on server:3000');
 });

@@ -28,7 +28,6 @@ export default class ProfileUpdate extends React.Component {
 
     // Updates profile on clicking submit button (Incomplete);
     this.updateProfile = () => {
-      console.log('Update profile');
       let data = this.state;
       this.setState({renderState: !this.state.renderState})
       var url = '/profile';
@@ -42,9 +41,6 @@ export default class ProfileUpdate extends React.Component {
 
       fetch(url, options)
         .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        })
         .catch((errors) => {
           console.log('Login Error: ', errors);
       });

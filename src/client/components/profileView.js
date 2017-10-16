@@ -51,7 +51,6 @@ export default class ProfileView extends React.Component {
     }
 
     this.handleSendEmail = () => {
-      //console.log(this.state.userEmail, this.state.hostEmail, this.state.date)
       this.setState({open: false});
       const url = `/contacthost`;
       let body = {
@@ -59,7 +58,6 @@ export default class ProfileView extends React.Component {
         hostEmail: this.state.hostEmail,
         date: JSON.stringify(this.state.date)
       }
-      //console.log('body',body)
       request
         .post(url)
         .send(body)
@@ -73,20 +71,11 @@ export default class ProfileView extends React.Component {
       }
   }
 
-
   componentDidMount() {
     let token = localStorage.getItem('jwt');
     let decoded = jwt.decode(token);
-    //this.setState({name: decoded.name});
     this.setState({ownerEmail: decoded.email})
   }
-
-  // componentDidMount() {
-  //   let token = localStorage.getItem('jwt');
-  //   let decoded = jwt.decode(token);
-  //   this.setState({name: decoded.name});
-  //   this.setState({email: decoded.email});
-  // }
 
   render() {
       const actions = [
