@@ -56,11 +56,12 @@ export default class ShowProfile extends React.Component {
         id: id,
         confirmed: true
       }
-      console.log('body58', body)
       let url = '/bookings';
       confirmBooking(url, body, (res) => {
-        console.log('REs',res)
+        console.log(res.body)
       });
+      this.props.updateGuestBookings(this.props.user.email);
+      this.props.updateHostBookings(this.props.user.email);
     }
 
   }
@@ -98,9 +99,9 @@ export default class ShowProfile extends React.Component {
         return (
           <ul>{dogListItems}</ul>
         )
-        } else return (<div>You have not added a profile for your dog(s) yet!
-          <FlatButton label="New dog!" onClick={this.setState({openPostDog: !this.state.openPostDog})
-}>Click here to add a dog profile!</FlatButton> </div>)
+      } else return (<div>You have not added a profile for your dog(s) yet!</div>)
+          {/* <FlatButton label="New dog!" onClick={this.setState({openPostDog: !this.state.openPostDog})
+}>Click here to add a dog profile!</FlatButton> </div>) */}
 
       }
       function RenderHostings(props) {
@@ -119,7 +120,6 @@ export default class ShowProfile extends React.Component {
       }
       const RenderGuestings = (props) => {
         const guest = props.guest
-        console.log('GUEST', guest)
         if (guest.length) {
           const guestListItems = guest.map((listing, index)=>
             <li key={index}>
