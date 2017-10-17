@@ -35,7 +35,6 @@ export default class PostDog extends React.Component {
     this.handleSubmit = () => {
       for (let key in this.state) {
         if (this.state[key] === '') {
-          console.log('Form Error ', key);
           this.setState({error: `The following field is required: ${key}`});
           return;
         }
@@ -58,12 +57,13 @@ export default class PostDog extends React.Component {
       let url = '/dog';
 
       submitDog(url, formData, (res) => {
-        if (res.success === true) {
-          console.log('Dog submitted!');
+        if (res) {
           this.setState({message: res.message});
           this.setState({submitted: true});
+          this.props.updateProfile(this.props.user.email)
         } else {
-          console.log('Error: ', res.error);
+          console.log('Error: ', res);
+          this.setState({message: 'Sorry! An error occurred.'})
         }
       });
     }

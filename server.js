@@ -171,7 +171,6 @@ app.post('/dog', dogUpload, (req, res, next) => {
         res.status(404).send(err);
         next();
       } else {
-        res.status(200).send();
         next();
       }
   })
@@ -194,7 +193,7 @@ app.post('/dog', dogUpload, (req, res, next) => {
           if(err) {
             res.status(404).send(err);
           } else {
-            res.status(200).send();
+            res.status(200).send({message: 'Updated dogs!'});
           }
       })
     });
@@ -457,7 +456,7 @@ app.post('/contacthost', (req, res) => {
 
       newBooking.save((err, booking) => {
         if (err) {
-          console.log('errr',err)
+          console.log('err:',err)
         } else {
           console.log('success', booking)
         }

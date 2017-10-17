@@ -128,9 +128,56 @@ export default class Main extends React.Component {
         }
       });
     }
+
+//gets all stays the current user has requested
+  this.getGuestBookings = (email) => {
+    request
+      .get('/bookings/guest')
+      .query({ email: email })
+      .end((err, res) => {
+        if (err) {
+          console.error(err)
+        } else {
+          this.setState({
+            guestBookings: res.body
+          })
+        }
+      });
   }
 
-  // Populates listings on load
+//gets all stays the current user has been asked to host
+  this.getHostBookings = (email) => {
+    request
+      .get('/bookings/host')
+      .query({ email: email })
+      .end( (err, res) => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({
+            hostBookings: res.body
+          })
+        }
+      })
+  }
+//gets current user's profile info from the database
+  this.getProfileInfo = (email) => {
+    request
+      .get('/user')
+      .query({ email: email})
+      .end( (err, res) => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.setState({
+            user: res.body[0]
+          })
+        }
+      })
+  }
+}
+
+  // Populates listings, bookings, user profile on load
   componentDidMount() {
     this.handleSearch('');
     let token = localStorage.getItem('jwt');
@@ -138,57 +185,17 @@ export default class Main extends React.Component {
     if (decoded === null) {
       return;
     }
-    //request '/bookings/guest'
-    //this.setState({})
-    if(decoded !== undefined) {
-      request
-        .get('/bookings/guest')
-        .query({ email: decoded.email })
-        .end((err, res) => {
-          if (err) {
-            console.error(err)
-          } else {
-            //console.log("STAYING WITH:", res.body);
-            this.setState({
-              guestBookings: res.body
-            })
-          }
-        });
-
-      request
-        .get('/bookings/host')
-        .query({ email: decoded.email })
-        .end( (err, res) => {
-          if (err) {
-            console.error(err);
-          } else {
-          //  console.log("HOSTING:", res.body);
-            this.setState({
-              hostBookings: res.body
-            })
-          }
-        })
-      }
-
-      request
-        .get('/user')
-        .query({ email: decoded.email })
-        .end( (err, res) => {
-          if (err) {
-            console.error(err);
-          } else {
-           console.log("USER:", res.body[0]);
-            this.setState({
-              user: res.body[0]
-            })
-          }
-        })
-    this.setState({Name: decoded.username});
+    let email = decoded.email;
+    this.getGuestBookings(email);
+    this.getHostBookings(email);
+    this.getProfileInfo(email);
+    this.setState({
+      Name: decoded.username
+    });
   }
 
   // Renders AppBar, Search, Drawer, and PostListing
   render() {
-    //console.log(this.state)
     const actions = [
       <FlatButton
         label="Login"
@@ -242,7 +249,14 @@ export default class Main extends React.Component {
           }
         </Toolbar>
 
-        <ListingsContainer listings={this.state.listings} checkAuth={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
+        <ListingsContainer
+          listings={this.state.listings}
+          checkAuth={this.authLogin}
+          openLoginMessage={this.loginMessageToggle}
+          updateGuestBookings={this.getGuestBookings}
+          updateHostBookings={this.getHostBookings}
+          user={this.state.user}
+        />
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
           <AppBar
           title={this.state.Name}
@@ -250,7 +264,13 @@ export default class Main extends React.Component {
           onLeftIconButtonTouchTap={this.touchTap}
           style={{background: 'rgb(197, 186, 155)'}}
           />
-          <ShowProfile guestBookings={this.state.guestBookings} hostBookings={this.state.hostBookings} user={this.state.user}/>
+          <ShowProfile guestBookings={this.state.guestBookings}
+            hostBookings={this.state.hostBookings}
+            user={this.state.user}
+            updateGuestBookings={this.getGuestBookings}
+            updateHostBookings={this.getHostBookings}
+            updateUserInfo={this.getProfileInfo}
+          />
           <RaisedButton onClick={this.profileOnClick} label="Edit Profile" labelColor="white" style={this.styles} backgroundColor="rgb(197, 186, 155)" />
           {this.state.renderProfile ? <ProfileUpdate/> : null}
         </Drawer>
@@ -271,7 +291,7 @@ export default class Main extends React.Component {
           onRequestClose={this.postDog}
           autoScrollBodyContent={true}
         >
-          <PostDog />
+          <PostDog updateProfile={this.getProfileInfo} user={this.state.user}/>
         </Dialog>
 
         <Dialog
