@@ -91,15 +91,13 @@ const seedListingDB = () => {
     if(err) {
       console.log(err);
     } else {
-      // remove mary444 user prior to adding
-      User.remove({'username': 'mary444'}, (err) => {
+      User.remove({}, (err) => {
         if(err) {
           console.log(err);
         }
         mockCompleteUser.forEach((user) => {
           let reformatUser = JSON.stringify(user);
           let newUser = new User(JSON.parse(reformatUser));
-          // add user mary444 to database
           newUser.save((err) => {
             if(err) {
               console.log(err);
