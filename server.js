@@ -456,7 +456,7 @@ app.post('/contacthost', (req, res) => {
 
       newBooking.save((err, booking) => {
         if (err) {
-          console.log('errr',err)
+          console.log('err:',err)
         } else {
           console.log('success', booking)
         }

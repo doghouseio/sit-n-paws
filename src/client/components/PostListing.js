@@ -43,7 +43,6 @@ export default class PostListing extends React.Component {
     this.handleSubmit = () => {
       for (let key in this.state) {
         if (this.state[key] === '') {
-          console.log('Form Error ', key);
           this.setState({error: `The following field is required: ${key}`});
           return;
         }

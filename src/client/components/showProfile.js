@@ -58,7 +58,7 @@ export default class ShowProfile extends React.Component {
       }
       let url = '/bookings';
       confirmBooking(url, body, (res) => {
-        console.log(res.body)
+        return;
       });
       this.props.updateGuestBookings(this.props.user.email);
       this.props.updateHostBookings(this.props.user.email);

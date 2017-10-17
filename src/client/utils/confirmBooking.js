@@ -19,6 +19,6 @@ export default function confirmBooking(url, body, callback) {
       }
     })
     .catch((errors) => {
-      console.log('Put error: ', errors);
+      console.log('Post error: ', errors);
     })
 }

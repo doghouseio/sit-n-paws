@@ -129,7 +129,7 @@ export default class Main extends React.Component {
       });
     }
 
-
+//gets all stays the current user has requested
   this.getGuestBookings = (email) => {
     request
       .get('/bookings/guest')
@@ -138,7 +138,6 @@ export default class Main extends React.Component {
         if (err) {
           console.error(err)
         } else {
-          //console.log("STAYING WITH:", res.body);
           this.setState({
             guestBookings: res.body
           })
@@ -146,6 +145,7 @@ export default class Main extends React.Component {
       });
   }
 
+//gets all stays the current user has been asked to host
   this.getHostBookings = (email) => {
     request
       .get('/bookings/host')
@@ -154,14 +154,13 @@ export default class Main extends React.Component {
         if (err) {
           console.error(err);
         } else {
-        //  console.log("HOSTING:", res.body);
           this.setState({
             hostBookings: res.body
           })
         }
       })
   }
-
+//gets current user's profile info from the database
   this.getProfileInfo = (email) => {
     request
       .get('/user')
@@ -178,7 +177,7 @@ export default class Main extends React.Component {
   }
 }
 
-  // Populates listings on load
+  // Populates listings, bookings, user profile on load
   componentDidMount() {
     this.handleSearch('');
     let token = localStorage.getItem('jwt');
@@ -186,9 +185,7 @@ export default class Main extends React.Component {
     if (decoded === null) {
       return;
     }
-
     let email = decoded.email;
-
     this.getGuestBookings(email);
     this.getHostBookings(email);
     this.getProfileInfo(email);
@@ -199,7 +196,6 @@ export default class Main extends React.Component {
 
   // Renders AppBar, Search, Drawer, and PostListing
   render() {
-    //console.log(this.state)
     const actions = [
       <FlatButton
         label="Login"

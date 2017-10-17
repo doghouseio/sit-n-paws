@@ -41,7 +41,6 @@ export default class ListingView extends React.Component {
     // Handles the date change in contact me
     this.handleChangeDate = (e, date) => {
       this.setState({date: date});
-      //console.log(date);
     }
 
     // ProfileView - Opens modal to view profile
@@ -66,7 +65,6 @@ export default class ListingView extends React.Component {
         if (err) {
           console.log(err);
         } else {
-          // console.log('res68',res.body)
           callback(res.body)
         }
 
@@ -86,14 +84,12 @@ export default class ListingView extends React.Component {
 
 
     let outer = this;
-    // this.getDogData(outer.state.hostEmail, function(dogs) {
     this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
-      // console.log('line91',outer.state.dogs)
     });
+
     this.getDogPictureData(outer.state.hostEmail, function(pics) {
       outer.setState({dogsPictures:pics});
-      // console.log('line95',outer.state.dogsPictures)
     });
 
     this.handleCardClick = (e) => {
