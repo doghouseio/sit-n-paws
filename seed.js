@@ -87,38 +87,39 @@ const mockCompleteUser = [
 // function to clean listings from database and seed with above listings and user
 const seedListingDB = () => {
   // remove listings from database to start - NOTE THIS REMOVES ALL LISTINGS, SO BE CAREFUL IN PRODUCTION
-  Listing.remove({}, (err) => {
-    if(err) {
-      console.log(err);
-    } else {
-      User.remove({}, (err) => {
+
+
+  mockCompleteUser.forEach((user) => {
+      User.remove({username:user.username}, (err) => {
+      if(err) {
+        console.log(err);
+      }
+      let reformatUser = JSON.stringify(user);
+      let newUser = new User(JSON.parse(reformatUser));
+      newUser.save((err) => {
         if(err) {
           console.log(err);
         }
-        mockCompleteUser.forEach((user) => {
-          let reformatUser = JSON.stringify(user);
-          let newUser = new User(JSON.parse(reformatUser));
-          newUser.save((err) => {
-            if(err) {
-              console.log(err);
-            }
-          })
-        });
-        // iterate over mock listings, format, and save each listing into the database
-        listingsData.forEach((listing) => {
-          // reformat data to strings for parsing before saving
-          let reformatListing = JSON.stringify(listing);
-          let newListing = new Listing(JSON.parse(reformatListing));
-          newListing.save((err) => {
-            if(err) {
-              console.log(err);
-            }
-          })
-        })
       })
-      console.log('DATABASE SEEDED');
-    }
+    })
   })
+  listingsData.forEach((listing) => {
+    Listing.remove({name:listing.name}, (err) => {
+      if(err) {
+        console.log(err);
+      } else {
+        let reformatListing = JSON.stringify(listing);
+        let newListing = new Listing(JSON.parse(reformatListing));
+        newListing.save((err) => {
+          if(err) {
+            console.log(err);
+          }
+        })
+      }
+    })
+  })
+  console.log('DATABASE SEEDED');
+
 }
 
 module.exports = seedListingDB;
