@@ -20,7 +20,11 @@ export default class ListingsContainer extends React.Component {
               listing={listing}
               key={listing.name}
               checkAuth={this.props.checkAuth}
-              openLoginMessage={this.props.openLoginMessage}/>
+              openLoginMessage={this.props.openLoginMessage}
+              updateGuestBookings={this.props.updateGuestBookings}
+              updateHostBookings={this.props.updateHostBookings}
+              user={this.props.user}
+            />
             )
         })}
       </div>

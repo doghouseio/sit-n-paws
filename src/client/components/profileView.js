@@ -66,6 +66,7 @@ export default class ProfileView extends React.Component {
             console.error('There was an error sending email: ', err)
           } else {
             console.log('SUCCESS:', res);
+            this.props.updateGuestBookings(this.props.user.email);
           }
         });
       }

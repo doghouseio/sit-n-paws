@@ -41,7 +41,7 @@ export default class ListingView extends React.Component {
     // Handles the date change in contact me
     this.handleChangeDate = (e, date) => {
       this.setState({date: date});
-      console.log(date);
+      //console.log(date);
     }
 
     // ProfileView - Opens modal to view profile
@@ -66,6 +66,7 @@ export default class ListingView extends React.Component {
         if (err) {
           console.log(err);
         } else {
+          // console.log('res68',res.body)
           callback(res.body)
         }
 
@@ -85,14 +86,14 @@ export default class ListingView extends React.Component {
 
 
     let outer = this;
+    // this.getDogData(outer.state.hostEmail, function(dogs) {
     this.getDogData(outer.state.hostEmail, function(dogs) {
       outer.setState({dogs:dogs});
+      // console.log('line91',outer.state.dogs)
     });
     this.getDogPictureData(outer.state.hostEmail, function(pics) {
       outer.setState({dogsPictures:pics});
-    });
-    this.getDogPictureData(outer.state.hostEmail, function(pics) {
-      outer.setState({dogsPictures:pics});
+      // console.log('line95',outer.state.dogsPictures)
     });
 
     this.handleCardClick = (e) => {
@@ -116,6 +117,23 @@ export default class ListingView extends React.Component {
   }
 
   render() {
+    // These are the action buttons for the Dialog
+    // const actions = [
+    //   <FlatButton
+    //   label="Cancel"
+    //   secondary={true}
+    //   onClick={this.handleClose}
+    //   />,
+    //   <FlatButton
+    //     label="Send Message"
+    //     primary={true}
+    //     keyboardFocused={true}
+    //     onClick={this.handleSendEmail}
+    //   />
+    // ];
+
+    // Refer to material-ui cards for more info on changing card styles
+    // Each props.listing is passed from Main to listingsContainer to listingView
     return (
       <div>
         <Card onClick={this.handleCardClick}>
@@ -152,9 +170,17 @@ export default class ListingView extends React.Component {
           onRequestClose={this.profileView}
           autoScrollBodyContent={true}
         >
-          <ProfileView dogsPictures={this.state.dogsPictures} dogs={this.state.dogs} listing={this.props.listing} />
+          <ProfileView dogsPictures={this.state.dogsPictures}
+            dogs={this.state.dogs}
+            listing={this.props.listing}
+            updateGuestBookings={this.props.updateGuestBookings}
+            updateHostBookings={this.props.updateHostBookings}
+            user={this.props.user}
+          />
         </Dialog>
       </div>
     )
   }
 }
+// ListingView.propTypes = {listing: PropTypes.object.isRequired};
+// dogs={this.state.dogs}

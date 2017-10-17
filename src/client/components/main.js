@@ -253,7 +253,14 @@ export default class Main extends React.Component {
           }
         </Toolbar>
 
-        <ListingsContainer listings={this.state.listings} checkAuth={this.authLogin} openLoginMessage={this.loginMessageToggle}/>
+        <ListingsContainer
+          listings={this.state.listings}
+          checkAuth={this.authLogin}
+          openLoginMessage={this.loginMessageToggle}
+          updateGuestBookings={this.getGuestBookings}
+          updateHostBookings={this.getHostBookings}
+          user={this.state.user}
+        />
         <Drawer width={400} openSecondary={true} open={this.state.openDrawer} >
           <AppBar
           title={this.state.Name}
