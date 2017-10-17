@@ -170,7 +170,6 @@ export default class Main extends React.Component {
         if (err) {
           console.error(err);
         } else {
-         console.log("USER:", res.body[0]);
           this.setState({
             user: res.body[0]
           })
@@ -289,7 +288,7 @@ export default class Main extends React.Component {
           onRequestClose={this.postDog}
           autoScrollBodyContent={true}
         >
-          <PostDog />
+          <PostDog updateProfile={this.getProfileInfo} user={this.state.user}/>
         </Dialog>
 
         <Dialog

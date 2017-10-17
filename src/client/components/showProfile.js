@@ -66,8 +66,6 @@ export default class ShowProfile extends React.Component {
 
   }
 
-
-
   componentWillMount() {
     if (localStorage.jwt) {
       var token = localStorage.jwt;
